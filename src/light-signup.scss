@@ -7,19 +7,23 @@
 	background-color: white;
 	border: 1px solid #D0C6B8;
 	padding: 15px;
-	margin: 15px;
+	margin: 15px 0;
 }
 
 .n-light-signup__heading {
 	margin: 0;
-	@include oTypographySans(l);
+	@include oTypographySansBold(l);
 	color: #4A4A4A;
 	font-size: 18px;
 }
 
 .light-signup__link {
-	@include oTypographySans(m);
+	@include oTypographySerif(m);
 	font-size: 18px;
 	text-decoration: none;
 	color: #27757B;
+}
+
+.n-light-signup__email {
+	min-width: 250px;
 }
