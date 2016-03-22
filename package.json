@@ -1,0 +1,17 @@
+{
+  "name": "n-light-signup",
+  "version": "0.0.0",
+  "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Financial-Times/n-light-signup.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Financial-Times/n-light-signup/issues"
+  },
+  "homepage": "https://github.com/Financial-Times/n-light-signup",
+  "devDependencies": {
+    "origami-build-tools": "^4.2.0"
+  },
+  "private": true
+}

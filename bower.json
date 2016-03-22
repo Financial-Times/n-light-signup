@@ -1,0 +1,23 @@
+{
+  "name": "n-light-signup",
+  "main": [
+    "main.scss",
+    "main.js"
+  ],
+  "homepage": "https://github.com/Financial-Times/n-light-signup",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/js/components",
+    "test",
+    "tests"
+  ],
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "next-type": "^1.9.0",
+    "next-feature-flags-client": "^8.1.0",
+    "next-sass-setup": "^7.0.5"
+  }
+}

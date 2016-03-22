@@ -1,0 +1,9 @@
+machine:
+  node:
+    version: 4.2.1
+
+dependencies:
+  post:
+    - npm install bower
+    - bower install
+    - make build

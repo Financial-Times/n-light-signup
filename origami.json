@@ -1,0 +1,15 @@
+{
+    "description": "Next FT - light sign-up",
+    "origamiType": "module",
+    "origamiVersion": 1,
+    "support": "next.team@ft.com",
+    "supportStatus": "experimental",
+    "runServer": "true",
+    "demos": [
+        {
+            "path": "/demos/light-signup-demo.html",
+            "expanded": true,
+            "description": ""
+        }
+    ]
+}

@@ -1,0 +1,25 @@
+@import "next-type/main";
+@import "o-ft-icons/main";
+@import "next-sass-setup/main";
+
+.n-light-signup {
+	position: relative;
+	background-color: white;
+	border: 1px solid #D0C6B8;
+	padding: 15px;
+	margin: 15px;
+}
+
+.n-light-signup__heading {
+	margin: 0;
+	@include oTypographySans(l);
+	color: #4A4A4A;
+	font-size: 18px;
+}
+
+.light-signup__link {
+	@include oTypographySans(m);
+	font-size: 18px;
+	text-decoration: none;
+	color: #27757B;
+}
