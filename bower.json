@@ -16,8 +16,6 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "next-type": "^1.9.0",
-    "next-feature-flags-client": "^8.1.0",
-    "next-sass-setup": "^7.0.5"
+    "next-sass-setup": "^7.8.3"
   }
 }
