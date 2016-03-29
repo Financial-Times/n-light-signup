@@ -17,6 +17,10 @@
   "private": true,
   "dependencies": {
     "next-sass-setup": "^7.8.3",
-    "n-light-signup": "https://github.com/Financial-Times/n-light-signup/archive/master.zip"
+    "n-light-signup": "https://github.com/Financial-Times/n-light-signup/archive/master.zip",
+    "o-buttons": "~3.1.3"
+  },
+  "resolutions": {
+    "o-ft-icons": "next"
   }
 }

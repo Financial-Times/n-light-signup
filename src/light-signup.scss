@@ -1,6 +1,8 @@
 @import "o-typography/main";
 @import "o-ft-icons/main";
 @import "next-sass-setup/main";
+@import "o-buttons/main";
+@import "o-grid/main";
 
 .n-light-signup {
 	position: relative;
@@ -26,4 +28,12 @@
 
 .n-light-signup__email {
 	min-width: 250px;
+	width: 100%;
+}
+
+.n-light-signup__submit {
+	@include oButtons();
+	@include oButtonsTheme(standout);
+	text-transform: none;
+	max-width: 150px;
 }

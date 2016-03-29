@@ -5,6 +5,4 @@ build/
 node_modules/
 .idea/
 demos/local/
-demos/cookie-message-demo.html
-
-
+demos/light-signup-demo.html

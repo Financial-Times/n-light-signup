@@ -1,11 +1,21 @@
 <div class="n-light-signup" data-trackable="light-signup">
-	<h2 class="n-light-signup__heading">Free FT content</h2>
-	<p>
-		Sign-up for 7 days of top FT new stories.
-		<a href="#" class="n-light-signup__link" data-trackable="learn-more">Learn more</a>
-	</p>
-	<form action="https://ft-next-light-signup.herokuapp.com/subscribe" method="post">
-		<input type="text" placeholder="your@email.com" class="n-light-signup__email" data-trackable="email"/>
-		<input type="submit" value="Sign up" class="n-light-signup__submit" data-trackable="submit"/>
+	<div class="o-grid-row o-grid-row--compact">
+		<div data-o-grid-colspan="12">
+			<h2 class="n-light-signup__heading">Free FT content</h2>
+			<p>
+				Sign-up for 7 days of top FT new stories.
+				<a href="#" class="n-light-signup__link" data-trackable="learn-more">Learn more</a>
+			</p>
+		</div>
+	</div>
+	<form action="/signup/api/light-signup" method="post">
+		<div class="o-grid-row">
+			<div data-o-grid-colspan="M6">
+				<input type="text" placeholder="your@email.com" name="email" class="n-light-signup__email" data-trackable="email"/>
+			</div>
+			<div data-o-grid-colspan="M6">
+				<input type="submit" value="Sign up" class="n-light-signup__submit" data-trackable="submit"/>
+			</div>
+		</div>
 	</form>
 </div>
