@@ -6,8 +6,8 @@
 
 .n-light-signup {
 	position: relative;
-	background-color: white;
-	border: 1px solid #D0C6B8;
+	border-top: 1px solid #D0C6B8;
+	border-bottom: 1px solid #D0C6B8;
 	padding: 15px;
 	margin: 15px 0;
 }
@@ -20,7 +20,7 @@
 }
 
 .light-signup__link {
-	@include oTypographySerif(m);
+	@include oTypographySans(m);
 	font-size: 18px;
 	text-decoration: none;
 	color: #27757B;
@@ -36,4 +36,9 @@
 	@include oButtonsTheme(standout);
 	text-transform: none;
 	max-width: 150px;
+}
+
+.n-light-signup__no-spam {
+	@include oTypographySans(xs);
+	margin: 5px 0;
 }
