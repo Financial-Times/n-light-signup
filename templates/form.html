@@ -1,30 +1,37 @@
 <div class="n-light-signup" data-trackable="light-signup">
 	<div class="o-grid-row o-grid-row--compact">
 		<div data-o-grid-colspan="12">
-			<h2 class="n-light-signup__heading">Get a taste of the FT</h2>
+			<h2 class="n-light-signup__heading">Want a summary of the top stories of the day?</h2>
 			<p class="n-light-signup__tagline">
-				Free top stories straight to your inbox, every morning.
-			</p>
-			<p>
-				For 7 days, get 3 of the most talked about stories emailed directly to you.
+                We are currently trialling and collecting feedback on our daily top stories summary email. Please enter your email address below to be among the first to receive the email that contains 3 free articles, for 7 days.
 			</p>
 		</div>
 	</div>
-	<form action="/signup/api/light-signup" method="post">
-		<div class="o-grid-row">
-			<div data-o-grid-colspan="M6">
-				<input type="text" placeholder="your@email.com" name="email" class="n-light-signup__email" data-trackable="email"/>
-			</div>
-			<div data-o-grid-colspan="M6">
-				<input type="submit" value="Sign up" class="n-light-signup__submit" data-trackable="submit"/>
-			</div>
-		</div>
-	</form>
-	<div class="o-grid-row o-grid-row--compact">
-		<div data-o-grid-colspan="12">
-			<p class="n-light-signup__no-spam">
-				No subscription necessary, no spam. <a href="#" class="n-light-signup__link" data-trackable="see-sample-email">See sample email</a>.
-			</p>
-		</div>
-	</div>
+    <div class="n-light-signup__form">
+	    <form action="/signup/api/light-signup" method="post" id="the-actual-form">
+            <p class="n-light-signup__checkbox">
+                <input type="checkbox" name="terms" value="terms"/> By ticking this checkbox you agree to our <a href="#">terms and conditions</a> and <a href="#">privacy policy</a>.
+            </p>
+		    <div class="o-grid-row">
+			    <div data-o-grid-colspan="M6">
+				    <input type="text" id="email" placeholder="your@email.com" name="theemail" class="n-light-signup__email" data-trackable="email"/>
+			    </div>
+			    <div data-o-grid-colspan="M6">
+				    <input type="submit" value="Subscribe" class="n-light-signup__submit" data-trackable="submit"/>
+			    </div>
+		    </div>
+	    </form>
+	    <div class="o-grid-row o-grid-row--compact">
+		    <div data-o-grid-colspan="12">
+			    <p class="n-light-signup__no-spam">
+				    No spam. One-click unsubscribe. <a href="#" class="n-light-signup__link" data-trackable="see-sample-email">See sample email</a>.
+			    </p>
+		    </div>
+	    </div>
+    </div>
+    <div class="n-light-signup__thank-you" style="display:none;">
+        <p class="n-light-signup__heading">Thank you for signing up!</p>
+        <p>We will send you a summary of the top stories later this afternoon.</p>
+    </div>
+    </div>
 </div>
