@@ -3,47 +3,71 @@
 @import "next-sass-setup/main";
 @import "o-buttons/main";
 @import "o-grid/main";
+@import "o-forms/main";
 
 .n-light-signup {
-	position: relative;
-	border-top: 1px solid #D0C6B8;
-	border-bottom: 1px solid #D0C6B8;
-	padding: 15px;
-	margin: 15px 0;
+  position: relative;
+  border-top: 1px solid #D0C6B8;
+  border-bottom: 1px solid #D0C6B8;
+  padding: 15px;
+  margin: 15px 0;
 }
 
 .n-light-signup__heading {
-	margin: 0;
-	@include oTypographySansBold(l);
-	color: #4A4A4A;
-	font-size: 18px;
+  margin: 0;
+  @include oTypographySansBold(l);
+  color: #4A4A4A;
+  font-size: 18px;
 }
 
 .n-light-signup__tagline {
-	margin-top: 5px;
+  margin-top: 5px;
 }
 
 .light-signup__link {
-	@include oTypographySans(m);
-	font-size: 18px;
-	text-decoration: none;
-	color: #27757B;
+  @include oTypographySans(m);
+  font-size: 18px;
+  text-decoration: none;
+  color: #27757B;
 }
 
 .n-light-signup__email {
-	min-width: 250px;
-	width: 100%;
-	min-height: 20px; /* same height as standard button, minus forms padding */
+  min-width: 250px;
+  width: 100%;
+  min-height: 20px; /* same height as standard button, minus forms padding */
 }
 
 .n-light-signup__submit {
-	@include oButtons();
-	@include oButtonsTheme(standout);
-	text-transform: none;
-	max-width: 150px;
+  @include oButtons();
+  @include oButtonsTheme(standout);
+  text-transform: none;
+  max-width: 150px;
 }
 
 .n-light-signup__no-spam {
-	@include oTypographySans(xs);
-	margin: 5px 0;
+  @include oTypographySans(xs);
+  margin: 5px 0;
+}
+
+.n-light-signup__close {
+  @include nextIcon(
+	$icon-name: cross_disk,
+	$size: 20,
+	$color: #4A4A4A
+  );
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.n-light-signup__visually-hidden {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
 }
