@@ -14,8 +14,8 @@ export default {
 		const responseCopy = {
 			'SUBSCRIPTION_SUCCESSFUL': 'Thanks – look out for your first briefing tomorrow morning',
 			'INVALID_REQUEST': 'That request was invalid',
-			'ALREADY_SUBSCRIBED': 'It looks like you’re currently receiving the daily top stories summary email, if you’re interested in getting access to more FT content, why not sign up for a £1 Trial for 4 weeks.',
-			'USER_ARCHIVED': 'It looks like you\'ve signed up to the daily top stories summary email before. If you\’re interested in getting access to more FT content, why not sign up for a £1 Trial for 4 weeks.'
+			'ALREADY_SUBSCRIBED': 'It looks like you’re currently receiving the daily top stories summary email, if you’re interested in getting access to more FT content, why not <a href="/products">sign up for a £1 Trial for 4 weeks</a>.',
+			'USER_ARCHIVED': 'It looks like you’ve signed up to the daily top stories summary email before. If you’re interested in getting access to more FT content, why not <a href="/products">sign up for a £1 Trial for 4 weeks</a>.'
 		};
 
 		// Handle user interaction
