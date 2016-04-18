@@ -15,13 +15,22 @@
 
 .n-light-signup__heading {
   margin: 0;
-  @include oTypographySansBold(l);
+  @include oTypographySans(l);
+  font-weight: 600;
   color: #4A4A4A;
-  font-size: 18px;
 }
 
 .n-light-signup__tagline {
+  @include oTypographySans(m);
   margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.n-light-signup__text {
+  @include oTypographySans(s);
+  font-size: 17px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .light-signup__link {
@@ -33,20 +42,26 @@
 
 .n-light-signup__email {
   min-width: 250px;
+  margin-right: 10px;
   width: 100%;
   min-height: 20px; /* same height as standard button, minus forms padding */
+  margin-bottom: 5px;
 }
 
 .n-light-signup__submit {
   @include oButtons();
   @include oButtonsTheme(standout);
   text-transform: none;
-  max-width: 150px;
+  height: 36px;
+  font-size: 18px;
+  max-width: 100px;
+  margin-bottom: 5px;
 }
 
 .n-light-signup__no-spam {
-  @include oTypographySans(xs);
-  margin: 5px 0;
+  @include oTypographySans(s);
+  margin: 0;
+  display: inline-block;
 }
 
 .n-light-signup__close {
@@ -74,4 +89,10 @@
 
 .n-light-signup__inner {
   position: relative;
+}
+
+.n-light-signup__secondary {
+  @include oTypographySans(m);
+  color: #4A4A4A;
+  margin: 15px 0;
 }
