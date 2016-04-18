@@ -35,6 +35,7 @@ export default {
 					headers: {
 						'Content-type': 'application/x-www-form-urlencoded'
 					},
+					credentials: 'include',
 					body: `email=${email}`
 				};
 
@@ -75,4 +76,4 @@ export default {
 
 	}
 
-}
+};
