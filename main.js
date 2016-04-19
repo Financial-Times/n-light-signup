@@ -5,12 +5,24 @@ export default {
 
 	init() {
 
-		const lightSignupContainer = document.querySelector('.n-light-signup__container');
+		const utmTermParam = /[?&]utm_term(=([^&#]*)|&|#|$)/i.exec(window.location.href);
 
-		lightSignupContainer.innerHTML = lightSignupHTML;
+		let userIsFromLightSignupEmail;
 
-		lightSignup.init();
+		if (utmTermParam) {
+			userIsFromLightSignupEmail = (utmTermParam[2] === 'lightsignup');
+		}
+
+		if (!userIsFromLightSignupEmail) {
+
+			const lightSignupContainer = document.querySelector('.n-light-signup__container');
+
+			lightSignupContainer.innerHTML = lightSignupHTML;
+
+			lightSignup.init();
+
+		}
 
 	}
 
-}
+};
