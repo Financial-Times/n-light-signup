@@ -38,7 +38,7 @@ export default {
 						'Content-type': 'application/x-www-form-urlencoded'
 					},
 					credentials: 'include',
-					body: `email=${email}`
+					body: `email=${encodeURIComponent(email)}`
 				};
 
 				fetch(url, opts)
