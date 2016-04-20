@@ -38,7 +38,7 @@ export default {
 						'Content-type': 'application/x-www-form-urlencoded'
 					},
 					credentials: 'include',
-					body: `email=${encodeURIComponent(email)}`
+					body: `email=${formatEmail(email)}`
 				};
 
 				fetch(url, opts)
@@ -76,6 +76,9 @@ export default {
 			invalidEmailMessage.classList.toggle('n-light-signup__visually-hidden');
 		}
 
+		function formatEmail(email) {
+			return encodeURIComponent(email.trim()).replace('%20', '+');
+		}
 	}
 
 };
