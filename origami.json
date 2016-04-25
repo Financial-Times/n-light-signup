@@ -13,6 +13,8 @@
         }
     ],
     "browserFeatures": {
-      "required": ["fetch"]
+        "required": [
+            "fetch"
+        ]
     }
 }

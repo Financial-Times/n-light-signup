@@ -2,12 +2,11 @@ export default {
 
 	init() {
 
-		const lightSignupComponent = document.querySelector('.o-light-signup');
-		const closeButton = document.querySelector('.o-light-signup__close');
-		const lightSignupForm = document.querySelector('.o-light-signup__form');
-		const displaySection = document.querySelector('.o-light-signup__secondary');
-		const emailField = document.querySelector('.o-light-signup__email');
-		const invalidEmailMessage = document.querySelector('.o-light-signup__email-error-msg');
+		const closeButton = el.querySelector('.o-light-signup__close');
+		const lightSignupForm = el.querySelector('.o-light-signup__form');
+		const displaySection = el.querySelector('.o-light-signup__secondary');
+		const emailField = el.querySelector('.o-light-signup__email');
+		const invalidEmailMessage = el.querySelector('.o-light-signup__email-error-msg');
 
 		// Keep marketing copy somewhere
 
@@ -49,14 +48,12 @@ export default {
 					.catch(err => console.log(err));
 
 			} else {
-
 				toggleValidationErrors();
-
 			}
 		});
 
 		closeButton.addEventListener('click', () => {
-			lightSignupComponent.style.display = 'none';
+			el.style.display = 'none';
 		});
 
 		emailField.addEventListener('click', () => {
@@ -80,5 +77,4 @@ export default {
 			return encodeURIComponent(email.trim()).replace('%20', '+');
 		}
 	}
-
 };
