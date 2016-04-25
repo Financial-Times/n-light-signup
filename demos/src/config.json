@@ -3,7 +3,8 @@
     {
       "name": "light-signup-demo",
       "sass": "demos/src/demo.scss",
-      "template": "templates/form.html"
+      "template": "templates/form.html",
+      "js": "demos/src/demo.js"
     }
   ]
 }
