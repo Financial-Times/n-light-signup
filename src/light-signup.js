@@ -7,7 +7,7 @@ const defaultOptions = {
 export default {
 
 	init(el, options = {}) {
-		defaultsDeep(options, defaultOptions);
+		defaultsDeep(options, optionsFromData(el), defaultOptions);
 
 		const closeButton = el.querySelector('.o-light-signup__close');
 		const lightSignupForm = el.querySelector('.o-light-signup__form');
@@ -79,6 +79,18 @@ export default {
 
 		function formatEmail(email) {
 			return encodeURIComponent(email.trim()).replace('%20', '+');
+		}
+
+		function optionsFromData(el) {
+			const options = {};
+			Object.keys(defaultOptions).forEach(key => {
+				const attr = 'data-o-light-signup-' + key.replace(/-[a-z]/gi, match => match.substr(1).toUpperCase());
+				if(el.hasAttribute(attr)) {
+					options[key] = el.getAttribute(attr);
+				}
+			});
+
+			return options;
 		}
 	}
 };

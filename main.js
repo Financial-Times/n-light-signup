@@ -11,7 +11,6 @@ export default {
 			userIsFromLightSignupEmail = (utmTermParam[2] === 'lightsignup');
 		}
 
-
 		if(!(el instanceof HTMLElement)) {
 			el = document.querySelector(el);
 		}
