@@ -6,7 +6,7 @@ $next-sass-setup-is-silent: false !default;
 @import "o-grid/main";
 @import "o-forms/main";
 
-.n-light-signup {
+.o-light-signup {
   position: relative;
   border-top: 1px solid #D0C6B8;
   border-bottom: 1px solid #D0C6B8;
@@ -16,20 +16,20 @@ $next-sass-setup-is-silent: false !default;
   background-color: white;
 }
 
-.n-light-signup__heading {
+.o-light-signup__heading {
   margin: 0;
   @include oTypographySans(l);
   font-weight: 600;
   color: #4A4A4A;
 }
 
-.n-light-signup__tagline {
+.o-light-signup__tagline {
   @include oTypographySans(m);
   margin-top: 5px;
   margin-bottom: 5px;
 }
 
-.n-light-signup__text {
+.o-light-signup__text {
   @include oTypographySans(s);
   font-size: 17px;
   margin-top: 10px;
@@ -43,7 +43,7 @@ $next-sass-setup-is-silent: false !default;
   color: #27757B;
 }
 
-.n-light-signup__email {
+.o-light-signup__email {
   min-width: 250px;
   margin-right: 10px;
   width: 100%;
@@ -51,7 +51,7 @@ $next-sass-setup-is-silent: false !default;
   margin-bottom: 5px;
 }
 
-.n-light-signup__submit {
+.o-light-signup__submit {
   @include oButtons();
   @include oButtonsTheme(standout);
   text-transform: none;
@@ -61,13 +61,13 @@ $next-sass-setup-is-silent: false !default;
   margin-bottom: 5px;
 }
 
-.n-light-signup__no-spam {
+.o-light-signup__no-spam {
   @include oTypographySans(s);
   margin: 0;
   display: inline-block;
 }
 
-.n-light-signup__close {
+.o-light-signup__close {
   @include nextIcon(
 	$icon-name: cross_disk,
 	$size: 20,
@@ -79,7 +79,7 @@ $next-sass-setup-is-silent: false !default;
   right: 0;
 }
 
-.n-light-signup__visually-hidden {
+.o-light-signup__visually-hidden {
   position: absolute;
   overflow: hidden;
   clip: rect(0 0 0 0);
@@ -90,17 +90,17 @@ $next-sass-setup-is-silent: false !default;
   border: 0;
 }
 
-.n-light-signup__inner {
+.o-light-signup__inner {
   position: relative;
 }
 
-.n-light-signup__secondary {
+.o-light-signup__secondary {
   @include oTypographySans(m);
   color: #4A4A4A;
   margin: 15px 0;
 }
 
-.n-light-signup__email-error-msg {
+.o-light-signup__email-error-msg {
   width: 100%;
   display: inline-block;
 }

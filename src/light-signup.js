@@ -2,12 +2,12 @@ export default {
 
 	init() {
 
-		const lightSignupComponent = document.querySelector('.n-light-signup');
-		const closeButton = document.querySelector('.n-light-signup__close');
-		const lightSignupForm = document.querySelector('.n-light-signup__form');
-		const displaySection = document.querySelector('.n-light-signup__secondary');
-		const emailField = document.querySelector('.n-light-signup__email');
-		const invalidEmailMessage = document.querySelector('.n-light-signup__email-error-msg');
+		const lightSignupComponent = document.querySelector('.o-light-signup');
+		const closeButton = document.querySelector('.o-light-signup__close');
+		const lightSignupForm = document.querySelector('.o-light-signup__form');
+		const displaySection = document.querySelector('.o-light-signup__secondary');
+		const emailField = document.querySelector('.o-light-signup__email');
+		const invalidEmailMessage = document.querySelector('.o-light-signup__email-error-msg');
 
 		// Keep marketing copy somewhere
 
@@ -73,7 +73,7 @@ export default {
 
 		function toggleValidationErrors() {
 			lightSignupForm.classList.toggle('o-forms--error');
-			invalidEmailMessage.classList.toggle('n-light-signup__visually-hidden');
+			invalidEmailMessage.classList.toggle('o-light-signup__visually-hidden');
 		}
 
 		function formatEmail(email) {

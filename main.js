@@ -15,7 +15,7 @@ export default {
 
 		if (!userIsFromLightSignupEmail) {
 
-			const lightSignupContainer = document.querySelector('.n-light-signup__container');
+			const lightSignupContainer = document.querySelector('.o-light-signup__container');
 
 			lightSignupContainer.innerHTML = lightSignupHTML;
 
