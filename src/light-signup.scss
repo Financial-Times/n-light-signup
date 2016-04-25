@@ -1,7 +1,5 @@
 @import "o-typography/main";
 @import "o-ft-icons/main";
-$next-sass-setup-is-silent: false !default;
-@import "next-sass-setup/main";
 @import "o-buttons/main";
 @import "o-grid/main";
 @import "o-forms/main";
@@ -68,11 +66,13 @@ $next-sass-setup-is-silent: false !default;
 }
 
 .o-light-signup__close {
-  @include nextIcon(
+  @include oFtIconsGetSvg(
 	$icon-name: cross_disk,
-	$size: 20,
 	$color: #4A4A4A
   );
+  display: inline-block;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
   position: absolute;
   top: 0;
