@@ -1,6 +1,13 @@
+import defaultsDeep from 'lodash/object/defaultsDeep';
+
+const defaultOptions = {
+	signupUrl: '/signup/api/light-signup'
+};
+
 export default {
 
-	init() {
+	init(el, options = {}) {
+		defaultsDeep(options, defaultOptions);
 
 		const closeButton = el.querySelector('.o-light-signup__close');
 		const lightSignupForm = el.querySelector('.o-light-signup__form');
@@ -28,9 +35,6 @@ export default {
 			const email = emailField.value;
 
 			if (isValidEmail(email)) {
-
-				const url = '/signup/api/light-signup';
-
 				const opts = {
 					method: 'POST',
 					headers: {
@@ -40,7 +44,7 @@ export default {
 					body: `email=${formatEmail(email)}`
 				};
 
-				fetch(url, opts)
+				fetch(options.signupUrl, opts)
 					.then(response => response.text())
 					.then(response => {
 						displaySection.innerHTML = responseMsg[response] ? responseMsg[response] : responseMsg["INVALID_REQUEST"];
