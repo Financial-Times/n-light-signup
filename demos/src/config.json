@@ -1,4 +1,7 @@
 {
+  "demosDefaults": {
+    "dependencies": ["o-fonts@^2.0.0"]
+  },
   "demos": [
     {
       "name": "light-signup-demo",
