@@ -9,11 +9,13 @@ export default {
 	init(el, options = {}) {
 		defaultsDeep(options, optionsFromData(el), defaultOptions);
 
-		const closeButton = el.querySelector('.o-light-signup__close');
-		const lightSignupForm = el.querySelector('.o-light-signup__form');
-		const displaySection = el.querySelector('.o-light-signup__secondary');
-		const emailField = el.querySelector('.o-light-signup__email');
-		const invalidEmailMessage = el.querySelector('.o-light-signup__email-error-msg');
+		const closeButton = el.querySelector('[data-o-light-signup-close]');
+		const lightSignupForm = el.querySelector('[data-o-light-signup-form]');
+		const displaySection = el.querySelector('[data-o-light-signup-completion-message]');
+		const emailField = el.querySelector('input[name=email]');
+		const invalidEmailMessage = el.querySelector('[data-o-light-signup-email-error]');
+
+		console.log(closeButton, lightSignupForm, displaySection, emailField, invalidEmailMessage);
 
 		// Keep marketing copy somewhere
 
