@@ -1,4 +1,5 @@
 import defaultsDeep from 'lodash/object/defaultsDeep';
+import kebabCase from 'lodash/string/kebabCase';
 
 const defaultOptions = {
 	signupUrl: '/signup/api/light-signup'
@@ -86,7 +87,8 @@ export default {
 		function optionsFromData(el) {
 			const options = {};
 			Object.keys(defaultOptions).forEach(key => {
-				const attr = 'data-o-light-signup-' + key.replace(/-[a-z]/gi, match => match.substr(1).toUpperCase());
+				// convert optionKeyLikeThis to data-o-light-signup-option-key-like-this
+				const attr = 'data-o-light-signup-' + kebabCase(key);
 				if(el.hasAttribute(attr)) {
 					options[key] = el.getAttribute(attr);
 				}
