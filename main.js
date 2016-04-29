@@ -16,10 +16,10 @@ export default {
 		}
 
 		if (!userIsFromLightSignupEmail) {
-			if(el.matches('[data-o-component~="o-light-signup"]')) {
+			if(el.matches('[data-o-component~="o-email-only-signup"]')) {
 				lightSignup.init(el, options);
 			} else {
-				el = el.querySelector('[data-o-component~="o-light-signup"]');
+				el = el.querySelector('[data-o-component~="o-email-only-signup"]');
 				if(el) {
 					lightSignup.init(el, options);
 				}

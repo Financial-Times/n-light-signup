@@ -3,18 +3,18 @@ Experimental light sign-up form next.ft.com
 ## Installation
 
 ```shell
-bower install --S o-light-signup
+bower install --S o-email-only-signup
 ```
 
 ## Client JS
 
 ```javascript
-var signUp = require('o-light-signup');
+var signUp = require('o-email-only-signup');
 signUp.init();
 ```
 
 ## SCSS
 
 ```sass
-@import 'o-light-signup/main'
+@import 'o-email-only-signup/main'
 ```

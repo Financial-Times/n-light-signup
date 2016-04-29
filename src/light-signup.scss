@@ -4,7 +4,7 @@
 @import "o-grid/main";
 @import "o-forms/main";
 
-.o-light-signup {
+.o-email-only-signup {
   position: relative;
   border-top: 1px solid #D0C6B8;
   border-bottom: 1px solid #D0C6B8;
@@ -14,20 +14,20 @@
   background-color: white;
 }
 
-.o-light-signup__heading {
+.o-email-only-signup__heading {
   margin: 0;
   @include oTypographySans(l);
   font-weight: 600;
   color: #4A4A4A;
 }
 
-.o-light-signup__tagline {
+.o-email-only-signup__tagline {
   @include oTypographySans(m);
   margin-top: 5px;
   margin-bottom: 5px;
 }
 
-.o-light-signup__text {
+.o-email-only-signup__text {
   @include oTypographySans(s);
   font-size: 17px;
   margin-top: 10px;
@@ -41,7 +41,7 @@
   color: #27757B;
 }
 
-.o-light-signup__email {
+.o-email-only-signup__email {
   min-width: 250px;
   margin-right: 10px;
   width: 100%;
@@ -49,7 +49,7 @@
   margin-bottom: 5px;
 }
 
-.o-light-signup__submit {
+.o-email-only-signup__submit {
   @include oButtons();
   @include oButtonsTheme(standout);
   text-transform: none;
@@ -59,13 +59,13 @@
   margin-bottom: 5px;
 }
 
-.o-light-signup__no-spam {
+.o-email-only-signup__no-spam {
   @include oTypographySans(s);
   margin: 0;
   display: inline-block;
 }
 
-.o-light-signup__close {
+.o-email-only-signup__close {
   @include oFtIconsGetSvg(
 	$icon-name: cross_disk,
 	$color: #4A4A4A
@@ -79,7 +79,7 @@
   right: 0;
 }
 
-.o-light-signup__visually-hidden {
+.o-email-only-signup__visually-hidden {
   position: absolute;
   overflow: hidden;
   clip: rect(0 0 0 0);
@@ -90,17 +90,17 @@
   border: 0;
 }
 
-.o-light-signup__inner {
+.o-email-only-signup__inner {
   position: relative;
 }
 
-.o-light-signup__secondary {
+.o-email-only-signup__secondary {
   @include oTypographySans(m);
   color: #4A4A4A;
   margin: 15px 0;
 }
 
-.o-light-signup__email-error-msg {
+.o-email-only-signup__email-error-msg {
   width: 100%;
   display: inline-block;
 }

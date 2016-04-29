@@ -10,11 +10,11 @@ export default {
 	init(el, options = {}) {
 		defaultsDeep(options, optionsFromData(el), defaultOptions);
 
-		const closeButton = el.querySelector('[data-o-light-signup-close]');
-		const lightSignupForm = el.querySelector('[data-o-light-signup-form]');
-		const displaySection = el.querySelector('[data-o-light-signup-completion-message]');
+		const closeButton = el.querySelector('[data-o-email-only-signup-close]');
+		const lightSignupForm = el.querySelector('[data-o-email-only-signup-form]');
+		const displaySection = el.querySelector('[data-o-email-only-signup-completion-message]');
 		const emailField = el.querySelector('input[name=email]');
-		const invalidEmailMessage = el.querySelector('[data-o-light-signup-email-error]');
+		const invalidEmailMessage = el.querySelector('[data-o-email-only-signup-email-error]');
 
 		console.log(closeButton, lightSignupForm, displaySection, emailField, invalidEmailMessage);
 
@@ -77,7 +77,7 @@ export default {
 
 		function toggleValidationErrors() {
 			lightSignupForm.classList.toggle('o-forms--error');
-			invalidEmailMessage.classList.toggle('o-light-signup__visually-hidden');
+			invalidEmailMessage.classList.toggle('o-email-only-signup__visually-hidden');
 		}
 
 		function formatEmail(email) {
@@ -87,8 +87,8 @@ export default {
 		function optionsFromData(el) {
 			const options = {};
 			Object.keys(defaultOptions).forEach(key => {
-				// convert optionKeyLikeThis to data-o-light-signup-option-key-like-this
-				const attr = 'data-o-light-signup-' + kebabCase(key);
+				// convert optionKeyLikeThis to data-o-email-only-signup-option-key-like-this
+				const attr = 'data-o-email-only-signup-' + kebabCase(key);
 				if(el.hasAttribute(attr)) {
 					options[key] = el.getAttribute(attr);
 				}
