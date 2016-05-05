@@ -1,5 +1,5 @@
 @import "o-typography/main";
-@import "o-ft-icons/main";
+@import "o-icons/main";
 @import "o-buttons/main";
 @import "o-grid/main";
 @import "o-forms/main";
@@ -66,9 +66,9 @@
 }
 
 .o-email-only-signup__close {
-  @include oFtIconsGetSvg(
-	$icon-name: cross_disk,
-	$color: #4A4A4A
+  @include oIconsGetIcon(
+    $icon-name: 'cross-disk',
+    $color: #4A4A4A
   );
   display: inline-block;
   width: 20px;
