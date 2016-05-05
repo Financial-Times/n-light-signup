@@ -3,6 +3,7 @@
 @import "o-buttons/main";
 @import "o-grid/main";
 @import "o-forms/main";
+@import "o-colors/main";
 
 .o-email-only-signup {
   position: relative;
@@ -68,7 +69,7 @@
 .o-email-only-signup__close {
   @include oIconsGetIcon(
     $icon-name: 'cross-disk',
-    $color: #4A4A4A
+    $color: oColorsGetPaletteColor('grey-tint4')
   );
   display: inline-block;
   width: 20px;
@@ -96,7 +97,7 @@
 
 .o-email-only-signup__secondary {
   @include oTypographySans(m);
-  color: #4A4A4A;
+  color: oColorsGetPaletteColor('grey-tint4');
   margin: 15px 0;
 }
 
