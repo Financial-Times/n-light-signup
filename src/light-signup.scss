@@ -1,6 +1,6 @@
 @import "o-typography/main";
 @import "o-ft-icons/main";
-$next-sass-setup-is-silent: false;
+$next-sass-setup-is-silent: false !default;
 @import "next-sass-setup/main";
 @import "o-buttons/main";
 @import "o-grid/main";
