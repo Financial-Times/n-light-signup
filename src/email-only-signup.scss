@@ -5,21 +5,26 @@
 @import "o-forms/main";
 @import "o-colors/main";
 
+@include oColorsSetUseCase(o-email-only-signup-box, border, 'pink-tint3');
+@include oColorsSetUseCase(o-email-only-signup-box, background, 'white');
+@include oColorsSetUseCase(o-email-only-signup-muted, text, 'grey-tint4');
+@include oColorsSetUseCase(o-email-only-signup-link, text, 'teal-1');
+
 .o-email-only-signup {
+  @include oColorsFor(o-email-only-signup-box, background border);
   position: relative;
-  border-top: 1px solid #D0C6B8;
-  border-bottom: 1px solid #D0C6B8;
+  border-top: 1px solid;
+  border-bottom: 1px solid;
   padding: 15px;
   margin: 15px 0;
   display: inline-block;
-  background-color: white;
 }
 
 .o-email-only-signup__heading {
-  margin: 0;
   @include oTypographySans(l);
+  @include oColorsFor(o-email-only-signup-muted, text);
+  margin: 0;
   font-weight: 600;
-  color: #4A4A4A;
 }
 
 .o-email-only-signup__tagline {
@@ -37,9 +42,9 @@
 
 .light-signup__link {
   @include oTypographySans(m);
+  @include oColorsFor(o-email-only-signup-link, text);
   font-size: 18px;
   text-decoration: none;
-  color: #27757B;
 }
 
 .o-email-only-signup__email {
@@ -69,7 +74,7 @@
 .o-email-only-signup__close {
   @include oIconsGetIcon(
     $icon-name: 'cross-disk',
-    $color: oColorsGetPaletteColor('grey-tint4')
+    $color: oColorsGetColorFor(o-email-only-signup-muted, text)
   );
   display: inline-block;
   width: 20px;
@@ -97,7 +102,7 @@
 
 .o-email-only-signup__secondary {
   @include oTypographySans(m);
-  color: oColorsGetPaletteColor('grey-tint4');
+  @include oColorsFor(o-email-only-signup-muted, text);
   margin: 15px 0;
 }
 
