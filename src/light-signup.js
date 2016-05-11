@@ -16,8 +16,6 @@ export default {
 		const emailField = el.querySelector('input[name=email]');
 		const invalidEmailMessage = el.querySelector('[data-o-email-only-signup-email-error]');
 
-		console.log(closeButton, lightSignupForm, displaySection, emailField, invalidEmailMessage);
-
 		// Keep marketing copy somewhere
 
 		const pageLocation = window.location.href;
