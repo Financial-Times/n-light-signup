@@ -1,4 +1,4 @@
-import lightSignup from './src/light-signup';
+import emailOnlySignup from './src/email-only-signup';
 
 export default {
 
@@ -17,11 +17,11 @@ export default {
 
 		if (!userIsFromLightSignupEmail) {
 			if(el.matches('[data-o-component~="o-email-only-signup"]')) {
-				lightSignup.init(el, options);
+				emailOnlySignup.init(el, options);
 			} else {
 				el = el.querySelector('[data-o-component~="o-email-only-signup"]');
 				if(el) {
-					lightSignup.init(el, options);
+					emailOnlySignup.init(el, options);
 				}
 			}
 		}
