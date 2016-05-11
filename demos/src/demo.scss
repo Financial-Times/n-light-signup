@@ -1,1 +1,8 @@
-@import "../../main";
+$o-forms-is-silent: false;
+$o-grid-is-silent: false;
+$o-fonts-path: 'https://origami-build.ft.com/files/o-fonts-assets@1.3.0/';
+
+@import 'o-fonts/main';
+@import '../../main';
+
+@include oFontsInclude(MetricWeb);

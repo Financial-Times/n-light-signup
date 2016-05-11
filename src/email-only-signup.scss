@@ -1,35 +1,39 @@
 @import "o-typography/main";
-@import "o-ft-icons/main";
-$next-sass-setup-is-silent: false !default;
-@import "next-sass-setup/main";
+@import "o-icons/main";
 @import "o-buttons/main";
 @import "o-grid/main";
 @import "o-forms/main";
+@import "o-colors/main";
 
-.n-light-signup {
+@include oColorsSetUseCase(o-email-only-signup-box, border, 'pink-tint3');
+@include oColorsSetUseCase(o-email-only-signup-box, background, 'white');
+@include oColorsSetUseCase(o-email-only-signup-muted, text, 'grey-tint4');
+@include oColorsSetUseCase(o-email-only-signup-link, text, 'teal-1');
+
+.o-email-only-signup {
+  @include oColorsFor(o-email-only-signup-box, background border);
   position: relative;
-  border-top: 1px solid #D0C6B8;
-  border-bottom: 1px solid #D0C6B8;
+  border-top: 1px solid;
+  border-bottom: 1px solid;
   padding: 15px;
   margin: 15px 0;
   display: inline-block;
-  background-color: white;
 }
 
-.n-light-signup__heading {
-  margin: 0;
+.o-email-only-signup__heading {
   @include oTypographySans(l);
+  @include oColorsFor(o-email-only-signup-muted, text);
+  margin: 0;
   font-weight: 600;
-  color: #4A4A4A;
 }
 
-.n-light-signup__tagline {
+.o-email-only-signup__tagline {
   @include oTypographySans(m);
   margin-top: 5px;
   margin-bottom: 5px;
 }
 
-.n-light-signup__text {
+.o-email-only-signup__text {
   @include oTypographySans(s);
   font-size: 17px;
   margin-top: 10px;
@@ -38,12 +42,12 @@ $next-sass-setup-is-silent: false !default;
 
 .light-signup__link {
   @include oTypographySans(m);
+  @include oColorsFor(o-email-only-signup-link, text);
   font-size: 18px;
   text-decoration: none;
-  color: #27757B;
 }
 
-.n-light-signup__email {
+.o-email-only-signup__email {
   min-width: 250px;
   margin-right: 10px;
   width: 100%;
@@ -51,7 +55,7 @@ $next-sass-setup-is-silent: false !default;
   margin-bottom: 5px;
 }
 
-.n-light-signup__submit {
+.o-email-only-signup__submit {
   @include oButtons();
   @include oButtonsTheme(standout);
   text-transform: none;
@@ -61,25 +65,27 @@ $next-sass-setup-is-silent: false !default;
   margin-bottom: 5px;
 }
 
-.n-light-signup__no-spam {
+.o-email-only-signup__no-spam {
   @include oTypographySans(s);
   margin: 0;
   display: inline-block;
 }
 
-.n-light-signup__close {
-  @include nextIcon(
-	$icon-name: cross_disk,
-	$size: 20,
-	$color: #4A4A4A
+.o-email-only-signup__close {
+  @include oIconsGetIcon(
+    $icon-name: 'cross-disk',
+    $color: oColorsGetColorFor(o-email-only-signup-muted, text)
   );
+  display: inline-block;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
   position: absolute;
   top: 0;
   right: 0;
 }
 
-.n-light-signup__visually-hidden {
+.o-email-only-signup__visually-hidden {
   position: absolute;
   overflow: hidden;
   clip: rect(0 0 0 0);
@@ -90,17 +96,17 @@ $next-sass-setup-is-silent: false !default;
   border: 0;
 }
 
-.n-light-signup__inner {
+.o-email-only-signup__inner {
   position: relative;
 }
 
-.n-light-signup__secondary {
+.o-email-only-signup__secondary {
   @include oTypographySans(m);
-  color: #4A4A4A;
+  @include oColorsFor(o-email-only-signup-muted, text);
   margin: 15px 0;
 }
 
-.n-light-signup__email-error-msg {
+.o-email-only-signup__email-error-msg {
   width: 100%;
   display: inline-block;
 }

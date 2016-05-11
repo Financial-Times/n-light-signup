@@ -1,9 +1,13 @@
 {
+  "demosDefaults": {
+    "dependencies": ["o-fonts@^2.0.0", "o-grid@^4.0.0"]
+  },
   "demos": [
     {
-      "name": "light-signup-demo",
+      "name": "email-only-signup-demo",
       "sass": "demos/src/demo.scss",
-      "template": "templates/form.html"
+      "template": "demos/src/demo.html",
+      "js": "demos/src/demo.js"
     }
   ]
 }

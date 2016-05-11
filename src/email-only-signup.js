@@ -1,13 +1,20 @@
+import defaultsDeep from 'lodash/object/defaultsDeep';
+import kebabCase from 'lodash/string/kebabCase';
+
+const defaultOptions = {
+	signupUrl: '/signup/api/light-signup'
+};
+
 export default {
 
-	init() {
+	init(el, options = {}) {
+		defaultsDeep(options, optionsFromData(el), defaultOptions);
 
-		const lightSignupComponent = document.querySelector('.n-light-signup');
-		const closeButton = document.querySelector('.n-light-signup__close');
-		const lightSignupForm = document.querySelector('.n-light-signup__form');
-		const displaySection = document.querySelector('.n-light-signup__secondary');
-		const emailField = document.querySelector('.n-light-signup__email');
-		const invalidEmailMessage = document.querySelector('.n-light-signup__email-error-msg');
+		const closeButton = el.querySelector('[data-o-email-only-signup-close]');
+		const lightSignupForm = el.querySelector('[data-o-email-only-signup-form]');
+		const displaySection = el.querySelector('[data-o-email-only-signup-completion-message]');
+		const emailField = el.querySelector('input[name=email]');
+		const invalidEmailMessage = el.querySelector('[data-o-email-only-signup-email-error]');
 
 		// Keep marketing copy somewhere
 
@@ -29,9 +36,6 @@ export default {
 			const email = emailField.value;
 
 			if (isValidEmail(email)) {
-
-				const url = '/signup/api/light-signup';
-
 				const opts = {
 					method: 'POST',
 					headers: {
@@ -41,7 +45,7 @@ export default {
 					body: `email=${formatEmail(email)}`
 				};
 
-				fetch(url, opts)
+				fetch(options.signupUrl, opts)
 					.then(response => response.text())
 					.then(response => {
 						displaySection.innerHTML = responseMsg[response] ? responseMsg[response] : responseMsg["INVALID_REQUEST"];
@@ -49,14 +53,12 @@ export default {
 					.catch(err => console.log(err));
 
 			} else {
-
 				toggleValidationErrors();
-
 			}
 		});
 
 		closeButton.addEventListener('click', () => {
-			lightSignupComponent.style.display = 'none';
+			el.style.display = 'none';
 		});
 
 		emailField.addEventListener('click', () => {
@@ -73,12 +75,24 @@ export default {
 
 		function toggleValidationErrors() {
 			lightSignupForm.classList.toggle('o-forms--error');
-			invalidEmailMessage.classList.toggle('n-light-signup__visually-hidden');
+			invalidEmailMessage.classList.toggle('o-email-only-signup__visually-hidden');
 		}
 
 		function formatEmail(email) {
 			return encodeURIComponent(email.trim()).replace('%20', '+');
 		}
-	}
 
+		function optionsFromData(el) {
+			const options = {};
+			Object.keys(defaultOptions).forEach(key => {
+				// convert optionKeyLikeThis to data-o-email-only-signup-option-key-like-this
+				const attr = 'data-o-email-only-signup-' + kebabCase(key);
+				if(el.hasAttribute(attr)) {
+					options[key] = el.getAttribute(attr);
+				}
+			});
+
+			return options;
+		}
+	}
 };

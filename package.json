@@ -1,15 +1,15 @@
 {
-  "name": "n-light-signup",
+  "name": "o-email-only-signup",
   "version": "0.0.0",
   "main": "main.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Financial-Times/n-light-signup.git"
+    "url": "https://github.com/Financial-Times/o-email-only-signup.git"
   },
   "bugs": {
-    "url": "https://github.com/Financial-Times/n-light-signup/issues"
+    "url": "https://github.com/Financial-Times/o-email-only-signup/issues"
   },
-  "homepage": "https://github.com/Financial-Times/n-light-signup",
+  "homepage": "https://github.com/Financial-Times/o-email-only-signup",
   "devDependencies": {
     "origami-build-tools": "^4.2.0"
   },

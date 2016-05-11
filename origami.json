@@ -11,5 +11,10 @@
             "expanded": true,
             "description": ""
         }
-    ]
+    ],
+    "browserFeatures": {
+        "required": [
+            "fetch"
+        ]
+    }
 }
