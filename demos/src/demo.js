@@ -1,3 +1,3 @@
-import oLightSignup from '../../';
+import oEmailOnlySignup from '../../';
 
-oLightSignup.init();
+oEmailOnlySignup.init();
