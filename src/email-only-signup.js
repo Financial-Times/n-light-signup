@@ -59,6 +59,7 @@ export default {
 
 		closeButton.addEventListener('click', () => {
 			el.style.display = 'none';
+			el.setAttribute('aria-hidden', true);
 		});
 
 		emailField.addEventListener('click', () => {

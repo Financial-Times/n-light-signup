@@ -39,3 +39,23 @@ Some elements inside the form require specific data attributes so the JavaScript
 - `data-o-email-only-signup-close`: Applied to the close button
 - `data-o-email-only-signup-completion-message`: Applied to an element that will be replaced with a message when signup is complete
 - `data-o-email-only-signup-email-error`: Applied to an element containing a message to display when the entered email is invalid
+
+**[optional]** If a positioning element exists on the page the form will render as a child of it:
+
+- `data-o-email-only-signup-position-mvt`: Applied to an element to which the form will become a child [see below](#positioning-mvt) for more information.
+
+## Positioning MVT
+
+_**This is optional.** If no positioning element exists the form will render in place._
+
+The position of the signup form within the article (and indeed page) can be customised. This could be used to run a MVT on how the location of the form affects its performance.
+
+A positioning element with the data attribute `data-o-email-only-signup-position-mvt` **must** be present in the DOM. 
+
+If this element exists, the form component will become its child, thus moving the form to its position.
+
+_NOTE:_ you **should** initially render the form in a hidden state in order to avoid a reflow. Simply add the class `o-email-only-signup__visually-hidden` to the form (the `data-o-email-only-signup-form` element), the class will be removed when the component is initialised.
+
+
+
+
