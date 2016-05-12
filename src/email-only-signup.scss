@@ -13,8 +13,8 @@
 .o-email-only-signup {
   @include oColorsFor(o-email-only-signup-box, background border);
   position: relative;
-  border-top: 1px solid;
-  border-bottom: 1px solid;
+  border-width: 1px 0;
+  border-style: solid none;
   padding: 15px;
   margin: 15px 0;
   display: inline-block;
