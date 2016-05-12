@@ -19,6 +19,7 @@ export default {
 		// Keep marketing copy somewhere
 
 		const pageLocation = window.location.href;
+		const mvtPosition = document.querySelector('[data-o-email-only-signup-mvt-position]');
 
 		const responseMsg = {
 			'SUBSCRIPTION_SUCCESSFUL': 'Thanks – look out for your first briefing soon.',
@@ -27,6 +28,13 @@ export default {
 			'USER_ARCHIVED': 'It looks like you’ve signed up to the daily top stories summary email before. If you’re interested in getting access to more FT content, why not <a target="_blank" style="text-decoration:none;color:#27757B;" href="/products?segID=0801043">sign up to a 4 week Trial</a>?',
 			'USER_NOT_ANONYMOUS': `It looks like you already have an account with us. <a href="/login?location=${pageLocation}" style="text-decoration:none;color:#27757B;">Sign in</a>.`
 		};
+
+		// postion the form and ensure it is visible
+
+		if (mvtPosition) {
+			mvtPosition.appendChild(el);
+		}
+		toggleVisibility(true);
 
 		// Handle user interaction
 
@@ -58,7 +66,7 @@ export default {
 		});
 
 		closeButton.addEventListener('click', () => {
-			el.style.display = 'none';
+			toggleVisibility(false);
 		});
 
 		emailField.addEventListener('click', () => {
@@ -94,5 +102,12 @@ export default {
 
 			return options;
 		}
+
+		// @param {Boolean} show - true: display the component. false: hide it
+		function toggleVisibility(show) {
+			el.classList.toggle('o-email-only-signup__visually-hidden', !show);
+			el.setAttribute('aria-hidden', !show);
+		}
+
 	}
 };
