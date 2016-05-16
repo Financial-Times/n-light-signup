@@ -5,11 +5,24 @@
     "support": "next.team@ft.com",
     "supportStatus": "experimental",
     "runServer": "true",
+    "demosDefaults": {
+        "sass": "demos/src/demo.scss",
+        "js": "demos/src/demo.js",
+        "documentClasses": "",
+        "dependencies": "o-fonts@^2.0.0,o-grid@^4.0.0"
+    },
     "demos": [
         {
-            "path": "/demos/light-signup-demo.html",
-            "expanded": true,
-            "description": ""
+            "name": "promo-image",
+            "description": "Light signup form with promo image",
+            "template": "demos/src/standard.html",
+            "path": "/demos/promo-image.html"
+        },
+        {
+            "name": "no-promo",
+            "description": "Light signup form without promo image",
+            "template": "demos/src/no-promo.html",
+            "path": "/demos/no-promo.html"
         }
     ],
     "browserFeatures": {
