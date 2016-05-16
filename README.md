@@ -44,13 +44,17 @@ Some elements inside the form require specific data attributes so the JavaScript
 
 - `data-o-email-only-signup-position-mvt`: Applied to an element to which the form will become a child [see below](#positioning-mvt) for more information.
 
+## Promo image
+You can optionally include a responsive promo image asset in the component. See the demos for examples.
+
+
 ## Positioning MVT
 
 _**This is optional.** If no positioning element exists the form will render in place._
 
 The position of the signup form within the article (and indeed page) can be customised. This could be used to run a MVT on how the location of the form affects its performance.
 
-A positioning element with the data attribute `data-o-email-only-signup-position-mvt` **must** be present in the DOM. 
+A positioning element with the data attribute `data-o-email-only-signup-position-mvt` **must** be present in the DOM.
 
 If this element exists, the form component will become its child, thus moving the form to its position.
 
