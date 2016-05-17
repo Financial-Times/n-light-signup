@@ -92,6 +92,10 @@
   margin: 0;
   padding-top: 10px;
   display: inline-block;
+
+  strong {
+    @include oTypographySansBold(s);
+  }
 }
 
 .o-email-only-signup__close {
