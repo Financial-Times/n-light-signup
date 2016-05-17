@@ -66,6 +66,7 @@
 
 .light-signup__highlight {
   @include oColorsFor(o-email-only-signup-highlight, text);
+  text-transform: uppercase;
 }
 
 .o-email-only-signup__email {
