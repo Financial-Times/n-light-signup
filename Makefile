@@ -10,10 +10,10 @@ build:
 	obt build
 
 demo:
-	obt demo --runServer --updateorigami
+	obt demo --runServer
 
 watch:
-	obt demo --runServer --updateorigami --watch
+	obt demo --runServer --watch
 
 test:
 	npm test

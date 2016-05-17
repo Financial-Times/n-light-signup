@@ -15,14 +15,12 @@
         {
             "name": "promo-image",
             "description": "Light signup form with promo image",
-            "template": "demos/src/standard.html",
-            "path": "/demos/promo-image.html"
+            "template": "demos/src/standard.mustache"
         },
         {
             "name": "no-promo",
             "description": "Light signup form without promo image",
-            "template": "demos/src/no-promo.html",
-            "path": "/demos/no-promo.html"
+            "template": "demos/src/no-promo.mustache"
         }
     ],
     "browserFeatures": {
