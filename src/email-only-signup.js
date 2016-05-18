@@ -5,21 +5,9 @@ const defaultOptions = {
 	signupUrl: '/signup/api/light-signup'
 };
 
-export default {
-
-	init(el, options = {}) {
-		defaultsDeep(options, optionsFromData(el), defaultOptions);
-
-		const closeButton = el.querySelector('[data-o-email-only-signup-close]');
-		const lightSignupForm = el.querySelector('[data-o-email-only-signup-form]');
-		const displaySection = el.querySelector('[data-o-email-only-signup-completion-message]');
-		const emailField = el.querySelector('input[name=email]');
-		const invalidEmailMessage = el.querySelector('[data-o-email-only-signup-email-error]');
-
+export function getResponseMsg(response) {
 		// Keep marketing copy somewhere
-
 		const pageLocation = window.location.href;
-
 		const responseMsg = {
 			'SUBSCRIPTION_SUCCESSFUL': 'Thanks – look out for your first briefing soon.',
 			'INVALID_REQUEST': 'Sorry, something went wrong. Please try again.',
@@ -28,8 +16,19 @@ export default {
 			'USER_NOT_ANONYMOUS': `It looks like you already have an account with us. <a href="/login?location=${pageLocation}" style="text-decoration:none;color:#27757B;">Sign in</a>.`
 		};
 
-		// Handle user interaction
+	return responseMsg[response] ? responseMsg[response] : responseMsg.INVALID_REQUEST;
+}
 
+export function init(el, options = {}) {
+	defaultsDeep(options, optionsFromData(el), defaultOptions);
+
+	const closeButton = el.querySelector('[data-o-email-only-signup-close]');
+	const lightSignupForm = el.querySelector('[data-o-email-only-signup-form]');
+	const displaySection = el.querySelector('[data-o-email-only-signup-completion-message]');
+	const emailField = el.querySelector('input[name=email]');
+	const invalidEmailMessage = el.querySelector('[data-o-email-only-signup-email-error]');
+
+		// Handle user interaction
 		lightSignupForm.addEventListener('submit', (e) => {
 			e.preventDefault();
 
@@ -48,7 +47,7 @@ export default {
 				fetch(options.signupUrl, opts)
 					.then(response => response.text())
 					.then(response => {
-						displaySection.innerHTML = responseMsg[response] ? responseMsg[response] : responseMsg["INVALID_REQUEST"];
+					displaySection.innerHTML = getResponseMsg(response);
 					})
 					.catch(err => console.log(err));
 
@@ -95,5 +94,4 @@ export default {
 
 			return options;
 		}
-	}
 };
