@@ -5,9 +5,8 @@ const defaultOptions = {
 	signupUrl: '/signup/api/light-signup'
 };
 
-export function getResponseMsg(response) {
+export function getResponseMsg(response, pageLocation) {
 		// Keep marketing copy somewhere
-		const pageLocation = window.location.href;
 		const responseMsg = {
 			'SUBSCRIPTION_SUCCESSFUL': 'Thanks – look out for your first briefing soon.',
 			'INVALID_REQUEST': 'Sorry, something went wrong. Please try again.',
@@ -28,6 +27,8 @@ export function init(el, options = {}) {
 	const emailField = el.querySelector('input[name=email]');
 	const invalidEmailMessage = el.querySelector('[data-o-email-only-signup-email-error]');
 
+	const pageLocation = window.location.href;
+
 		// Handle user interaction
 		lightSignupForm.addEventListener('submit', (e) => {
 			e.preventDefault();
@@ -47,7 +48,7 @@ export function init(el, options = {}) {
 				fetch(options.signupUrl, opts)
 					.then(response => response.text())
 					.then(response => {
-					displaySection.innerHTML = getResponseMsg(response);
+					displaySection.innerHTML = getResponseMsg(response, pageLocation);
 					})
 					.catch(err => console.log(err));
 
