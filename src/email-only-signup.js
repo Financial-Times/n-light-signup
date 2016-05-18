@@ -29,70 +29,70 @@ export function init(el, options = {}) {
 
 	const pageLocation = window.location.href;
 
-		// Handle user interaction
-		lightSignupForm.addEventListener('submit', (e) => {
-			e.preventDefault();
+	// Handle user interaction
+	lightSignupForm.addEventListener('submit', (e) => {
+		e.preventDefault();
 
-			const email = emailField.value;
+		const email = emailField.value;
 
-			if (isValidEmail(email)) {
-				const opts = {
-					method: 'POST',
-					headers: {
-						'Content-type': 'application/x-www-form-urlencoded'
-					},
-					credentials: 'include',
-					body: `email=${formatEmail(email)}`
-				};
+		if (isValidEmail(email)) {
+			const opts = {
+				method: 'POST',
+				headers: {
+					'Content-type': 'application/x-www-form-urlencoded'
+				},
+				credentials: 'include',
+				body: `email=${formatEmail(email)}`
+			};
 
-				fetch(options.signupUrl, opts)
-					.then(response => response.text())
-					.then(response => {
-					displaySection.innerHTML = getResponseMsg(response, pageLocation);
-					})
-					.catch(err => console.log(err));
+			fetch(options.signupUrl, opts)
+			.then(response => response.text())
+			.then(response => {
+				displaySection.innerHTML = getResponseMsg(response, pageLocation);
+			})
+			.catch(err => console.log(err));
 
-			} else {
-				toggleValidationErrors();
+		} else {
+			toggleValidationErrors();
+		}
+	});
+
+	closeButton.addEventListener('click', () => {
+		el.style.display = 'none';
+		el.setAttribute('aria-hidden', true);
+	});
+
+	emailField.addEventListener('click', () => {
+		if (lightSignupForm.classList.contains('o-forms--error')) {
+			toggleValidationErrors();
+		}
+	});
+
+	// Validation helpers
+
+	function isValidEmail(email) {
+		return /(.+)@(.+)/.test(email);
+	}
+
+	function toggleValidationErrors() {
+		lightSignupForm.classList.toggle('o-forms--error');
+		invalidEmailMessage.classList.toggle('o-email-only-signup__visually-hidden');
+	}
+
+	function formatEmail(email) {
+		return encodeURIComponent(email.trim()).replace('%20', '+');
+	}
+
+	function optionsFromData(el) {
+		const options = {};
+		Object.keys(defaultOptions).forEach(key => {
+			// convert optionKeyLikeThis to data-o-email-only-signup-option-key-like-this
+			const attr = 'data-o-email-only-signup-' + kebabCase(key);
+			if(el.hasAttribute(attr)) {
+				options[key] = el.getAttribute(attr);
 			}
 		});
 
-		closeButton.addEventListener('click', () => {
-			el.style.display = 'none';
-			el.setAttribute('aria-hidden', true);
-		});
-
-		emailField.addEventListener('click', () => {
-			if (lightSignupForm.classList.contains('o-forms--error')) {
-				toggleValidationErrors();
-			}
-		});
-
-		// Validation helpers
-
-		function isValidEmail(email) {
-			return /(.+)@(.+)/.test(email);
-		}
-
-		function toggleValidationErrors() {
-			lightSignupForm.classList.toggle('o-forms--error');
-			invalidEmailMessage.classList.toggle('o-email-only-signup__visually-hidden');
-		}
-
-		function formatEmail(email) {
-			return encodeURIComponent(email.trim()).replace('%20', '+');
-		}
-
-		function optionsFromData(el) {
-			const options = {};
-			Object.keys(defaultOptions).forEach(key => {
-				// convert optionKeyLikeThis to data-o-email-only-signup-option-key-like-this
-				const attr = 'data-o-email-only-signup-' + kebabCase(key);
-				if(el.hasAttribute(attr)) {
-					options[key] = el.getAttribute(attr);
-				}
-			});
-
-			return options;
-		}
+		return options;
+	}
 };
