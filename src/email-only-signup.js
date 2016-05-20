@@ -18,81 +18,83 @@ export function getResponseMsg(response, pageLocation) {
 	return responseMsg[response] ? responseMsg[response] : responseMsg.INVALID_REQUEST;
 }
 
-export function init(el, options = {}) {
-	defaultsDeep(options, optionsFromData(el), defaultOptions);
+export default {
+	init(el, options = {}) {
+		defaultsDeep(options, optionsFromData(el), defaultOptions);
 
-	const closeButton = el.querySelector('[data-o-email-only-signup-close]');
-	const lightSignupForm = el.querySelector('[data-o-email-only-signup-form]');
-	const displaySection = el.querySelector('[data-o-email-only-signup-completion-message]');
-	const emailField = el.querySelector('input[name=email]');
-	const invalidEmailMessage = el.querySelector('[data-o-email-only-signup-email-error]');
+		const closeButton = el.querySelector('[data-o-email-only-signup-close]');
+		const lightSignupForm = el.querySelector('[data-o-email-only-signup-form]');
+		const displaySection = el.querySelector('[data-o-email-only-signup-completion-message]');
+		const emailField = el.querySelector('input[name=email]');
+		const invalidEmailMessage = el.querySelector('[data-o-email-only-signup-email-error]');
 
-	const pageLocation = window.location.href;
+		const pageLocation = window.location.href;
 
-	// Handle user interaction
-	lightSignupForm.addEventListener('submit', (e) => {
-		e.preventDefault();
+		// Handle user interaction
+		lightSignupForm.addEventListener('submit', (e) => {
+			e.preventDefault();
 
-		const email = emailField.value;
+			const email = emailField.value;
 
-		if (isValidEmail(email)) {
-			const opts = {
-				method: 'POST',
-				headers: {
-					'Content-type': 'application/x-www-form-urlencoded'
-				},
-				credentials: 'include',
-				body: `email=${formatEmail(email)}`
-			};
+			if (isValidEmail(email)) {
+				const opts = {
+					method: 'POST',
+					headers: {
+						'Content-type': 'application/x-www-form-urlencoded'
+					},
+					credentials: 'include',
+					body: `email=${formatEmail(email)}`
+				};
 
-			fetch(options.signupUrl, opts)
-			.then(response => response.text())
-			.then(response => {
+				fetch(options.signupUrl, opts)
+					.then(response => response.text())
+					.then(response => {
 				displaySection.innerHTML = getResponseMsg(response, pageLocation);
-			})
-			.catch(err => console.log(err));
+					})
+					.catch(err => console.log(err));
 
-		} else {
-			toggleValidationErrors();
-		}
-	});
-
-	closeButton.addEventListener('click', () => {
-		el.style.display = 'none';
-		el.setAttribute('aria-hidden', true);
-	});
-
-	emailField.addEventListener('click', () => {
-		if (lightSignupForm.classList.contains('o-forms--error')) {
-			toggleValidationErrors();
-		}
-	});
-
-	// Validation helpers
-
-	function isValidEmail(email) {
-		return /(.+)@(.+)/.test(email);
-	}
-
-	function toggleValidationErrors() {
-		lightSignupForm.classList.toggle('o-forms--error');
-		invalidEmailMessage.classList.toggle('o-email-only-signup__visually-hidden');
-	}
-
-	function formatEmail(email) {
-		return encodeURIComponent(email.trim()).replace('%20', '+');
-	}
-
-	function optionsFromData(el) {
-		const options = {};
-		Object.keys(defaultOptions).forEach(key => {
-			// convert optionKeyLikeThis to data-o-email-only-signup-option-key-like-this
-			const attr = 'data-o-email-only-signup-' + kebabCase(key);
-			if(el.hasAttribute(attr)) {
-				options[key] = el.getAttribute(attr);
+			} else {
+				toggleValidationErrors();
 			}
 		});
 
-		return options;
+		closeButton.addEventListener('click', () => {
+			el.style.display = 'none';
+			el.setAttribute('aria-hidden', true);
+		});
+
+		emailField.addEventListener('click', () => {
+			if (lightSignupForm.classList.contains('o-forms--error')) {
+				toggleValidationErrors();
+			}
+		});
+
+		// Validation helpers
+
+		function isValidEmail(email) {
+			return /(.+)@(.+)/.test(email);
+		}
+
+		function toggleValidationErrors() {
+			lightSignupForm.classList.toggle('o-forms--error');
+			invalidEmailMessage.classList.toggle('o-email-only-signup__visually-hidden');
+		}
+
+		function formatEmail(email) {
+			return encodeURIComponent(email.trim()).replace('%20', '+');
+		}
+
+		function optionsFromData(el) {
+			const options = {};
+			Object.keys(defaultOptions).forEach(key => {
+				// convert optionKeyLikeThis to data-o-email-only-signup-option-key-like-this
+				const attr = 'data-o-email-only-signup-' + kebabCase(key);
+				if(el.hasAttribute(attr)) {
+					options[key] = el.getAttribute(attr);
+				}
+			});
+
+			return options;
+		}
 	}
 };
