@@ -5,8 +5,20 @@ const defaultOptions = {
 	signupUrl: '/signup/api/light-signup'
 };
 
-export default {
+export function getResponseMsg(response, pageLocation) {
+	// Keep marketing copy somewhere
+	const responseMsg = {
+		'SUBSCRIPTION_SUCCESSFUL': 'Thanks – look out for your first briefing soon.',
+		'INVALID_REQUEST': 'Sorry, something went wrong. Please try again.',
+		'ALREADY_SUBSCRIBED': 'It looks like you’re currently receiving the daily top stories summary email. If you’re interested in getting access to more FT content, why not <a target="_blank" style="text-decoration:none;color:#27757B;" href="/products?segID=0801043">sign up to a 4 week Trial</a>?',
+		'USER_ARCHIVED': 'It looks like you’ve signed up to the daily top stories summary email before. If you’re interested in getting access to more FT content, why not <a target="_blank" style="text-decoration:none;color:#27757B;" href="/products?segID=0801043">sign up to a 4 week Trial</a>?',
+		'USER_NOT_ANONYMOUS': `It looks like you already have an account with us. <a href="/login?location=${pageLocation}" style="text-decoration:none;color:#27757B;">Sign in</a>.`
+	};
 
+	return responseMsg[response] ? responseMsg[response] : responseMsg.INVALID_REQUEST;
+}
+
+export default {
 	init(el, options = {}) {
 		defaultsDeep(options, optionsFromData(el), defaultOptions);
 
@@ -16,20 +28,9 @@ export default {
 		const emailField = el.querySelector('input[name=email]');
 		const invalidEmailMessage = el.querySelector('[data-o-email-only-signup-email-error]');
 
-		// Keep marketing copy somewhere
-
 		const pageLocation = window.location.href;
 
-		const responseMsg = {
-			'SUBSCRIPTION_SUCCESSFUL': 'Thanks – look out for your first briefing soon.',
-			'INVALID_REQUEST': 'Sorry, something went wrong. Please try again.',
-			'ALREADY_SUBSCRIBED': 'It looks like you’re currently receiving the daily top stories summary email. If you’re interested in getting access to more FT content, why not <a target="_blank" style="text-decoration:none;color:#27757B;" href="/products?segID=0801043">sign up to a 4 week Trial</a>?',
-			'USER_ARCHIVED': 'It looks like you’ve signed up to the daily top stories summary email before. If you’re interested in getting access to more FT content, why not <a target="_blank" style="text-decoration:none;color:#27757B;" href="/products?segID=0801043">sign up to a 4 week Trial</a>?',
-			'USER_NOT_ANONYMOUS': `It looks like you already have an account with us. <a href="/login?location=${pageLocation}" style="text-decoration:none;color:#27757B;">Sign in</a>.`
-		};
-
 		// Handle user interaction
-
 		lightSignupForm.addEventListener('submit', (e) => {
 			e.preventDefault();
 
@@ -48,7 +49,7 @@ export default {
 				fetch(options.signupUrl, opts)
 					.then(response => response.text())
 					.then(response => {
-						displaySection.innerHTML = responseMsg[response] ? responseMsg[response] : responseMsg["INVALID_REQUEST"];
+				displaySection.innerHTML = getResponseMsg(response, pageLocation);
 					})
 					.catch(err => console.log(err));
 
