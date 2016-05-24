@@ -34,16 +34,14 @@ export default {
 		lightSignupForm.addEventListener('submit', (e) => {
 			e.preventDefault();
 
-			const email = emailField.value;
-
-			if (isValidEmail(email)) {
+			if (isValidEmail(emailField.value)) {
 				const opts = {
 					method: 'POST',
 					headers: {
 						'Content-type': 'application/x-www-form-urlencoded'
 					},
 					credentials: 'include',
-					body: `email=${formatEmail(email)}`
+					body: serializeFormInputs(e.target)
 				};
 
 				fetch(options.signupUrl, opts)
@@ -80,8 +78,8 @@ export default {
 			invalidEmailMessage.classList.toggle('o-email-only-signup__visually-hidden');
 		}
 
-		function formatEmail(email) {
-			return encodeURIComponent(email.trim()).replace('%20', '+');
+		function encodeComponent(string) {
+			return encodeURIComponent(string.trim()).replace('%20', '+');
 		}
 
 		function optionsFromData(el) {
@@ -96,5 +94,20 @@ export default {
 
 			return options;
 		}
+
+		function serializeFormInputs(form) {
+			const inputs = form.elements;
+			let str = [];
+
+			for (let i=0; i<inputs.length; i++) {
+				let field = form.elements[i];
+				if (field.name && field.type !== 'submit' && field.type !== 'button') {
+					str.push(`${encodeComponent(field.name)}=${encodeComponent(field.value)}`);
+				}
+			}
+
+			return str.join("&");
+		}
+
 	}
 };
