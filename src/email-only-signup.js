@@ -22,21 +22,35 @@ export default {
 	init(el, options = {}) {
 		defaultsDeep(options, optionsFromData(el), defaultOptions);
 
-		const closeButton = el.querySelector('[data-o-email-only-signup-close]');
-		const lightSignupForm = el.querySelector('[data-o-email-only-signup-form]');
-		const displaySection = el.querySelector('[data-o-email-only-signup-completion-message]');
-		const emailField = el.querySelector('input[name=email]');
-		const topicSelect = el.querySelector('[data-o-email-only-signup-dropdown]');
-		const invalidEmailMessage = el.querySelector('[data-o-email-only-signup-email-error]');
+		const component = {
+			closeButton: el.querySelector('[data-o-email-only-signup-close]'),
+			content: el.querySelector('[data-o-email-only-signup-content]') || null,
+			contentFocusables: null,
+			discreetContent: el.querySelector('[data-o-email-only-signup-discreet-content]') || null,
+			discreetContentFocusables: null,
+			displaySection: el.querySelector('[data-o-email-only-signup-completion-message]'),
+			emailField: el.querySelector('input[name=email]'),
+			form: el.querySelector('[data-o-email-only-signup-form]'),
+			invalidEmailMessage: el.querySelector('[data-o-email-only-signup-email-error]'),
+			openButton: el.querySelector('[data-o-email-only-signup-open]') || null,
+			topicSelect: el.querySelector('[data-o-email-only-signup-dropdown]') || null,
+			ariaControls: el.querySelectorAll('[aria-controls]') || null
+		};
+
+		const VISUALLY_HIDDEN_CLASS = 'o-email-only-signup__visually-hidden';
+		const FORM_ERROR_CLASS = 'o-forms--error';
 		const SELECT_INACTIVE_CLASS = 'o-email-only-signup__select--inactive';
 
 		const pageLocation = window.location.href;
+		const discreetMode = (component.openButton && component.content && component.discreetContent);
+
+		enhanceForm();
 
 		// Handle user interaction
-		lightSignupForm.addEventListener('submit', (e) => {
+		component.form.addEventListener('submit', (e) => {
 			e.preventDefault();
 
-			if (isValidEmail(emailField.value)) {
+			if (isValidEmail(component.emailField.value)) {
 				const opts = {
 					method: 'POST',
 					headers: {
@@ -49,29 +63,79 @@ export default {
 				fetch(options.signupUrl, opts)
 					.then(response => response.text())
 					.then(response => {
-				displaySection.innerHTML = getResponseMsg(response, pageLocation);
+				component.displaySection.innerHTML = getResponseMsg(response, pageLocation);
 					})
 					.catch(err => console.log(err));
 
 			} else {
-				toggleValidationErrors();
+				toggleEmailValidationErrors();
 			}
 		});
 
-		closeButton.addEventListener('click', () => {
-			el.style.display = 'none';
-			el.setAttribute('aria-hidden', true);
-		});
-
-		emailField.addEventListener('click', () => {
-			if (emailField.classList.contains('o-forms--error')) {
-				toggleValidationErrors();
+		component.emailField.addEventListener('click', () => {
+			if (component.emailField.classList.contains(FORM_ERROR_CLASS)) {
+				toggleEmailValidationErrors();
 			}
 		});
 
-		if (topicSelect) {
-			topicSelect.addEventListener('focus', toggleSelectInactive);
-			topicSelect.addEventListener('blur', toggleSelectInactive);
+		if (component.topicSelect) {
+			component.topicSelect.addEventListener('focus', toggleSelectInactive);
+			component.topicSelect.addEventListener('blur', toggleSelectInactive);
+		}
+
+		component.closeButton.addEventListener('click', () => {
+			if (discreetMode) {
+				showDiscreetState(true);
+			} else {
+				el.style.display = 'none';
+				el.setAttribute('aria-hidden', true);
+				updateAriaControls();
+			}
+		});
+
+		if (discreetMode) {
+			component.openButton.addEventListener('click', () => {
+				showDiscreetState(false);
+			});
+		}
+
+		// transfrom core to enhanced experience
+		function enhanceForm () {
+			removeClass(VISUALLY_HIDDEN_CLASS, component.closeButton);
+			updateAriaControls();
+			if (discreetMode) {
+				component.contentFocusables = findFoucsablesInEl(component.content);
+				component.discreetContentFocusables = findFoucsablesInEl(component.discreetContent);
+			}
+		}
+
+		function updateAriaControls () {
+			if (component.ariaControls) {
+				for (let i=0; i<component.ariaControls.length; i++) {
+					let self = component.ariaControls[i];
+					let targetId = self.getAttribute('aria-controls');
+					let target = el.querySelector('#' + targetId);
+					let targetIsHidden = (target.getAttribute('aria-hidden') === 'true');
+					self.setAttribute('aria-expanded', !targetIsHidden);
+				}
+			}
+		}
+
+		function findFoucsablesInEl (element) {
+			let arr = [];
+			const tabEls = [
+				'input',
+				'button',
+				'a'
+			];
+			tabEls.forEach(function (selector) {
+				let nodelist = element.querySelectorAll(selector);
+				// let arr = [];
+				// for (var i = nodelist.length; i--; arr.unshift(nodelist[i]));
+				// tabs = tabs.concat(arr);
+				arr = arr.concat(Array.prototype.slice.call(nodelist));
+			});
+			return arr;
 		}
 
 		// Validation helpers
@@ -80,9 +144,28 @@ export default {
 			return /(.+)@(.+)/.test(email);
 		}
 
-		function toggleValidationErrors() {
-			emailField.classList.toggle('o-forms--error');
-			invalidEmailMessage.classList.toggle('o-email-only-signup__visually-hidden');
+		function toggleEmailValidationErrors() {
+			toggleClass(FORM_ERROR_CLASS, component.emailField);
+			toggleClass(VISUALLY_HIDDEN_CLASS, component.invalidEmailMessage);
+		}
+
+		function showDiscreetState(showCollapsed) {
+
+			component.content.setAttribute('aria-hidden', showCollapsed);
+			toggleClass(VISUALLY_HIDDEN_CLASS, component.content, showCollapsed);
+			component.contentFocusables.forEach(function (el) {
+				toggleTabIndex(el, showCollapsed);
+			});
+			// make all focus els -1 inside content
+
+
+			component.discreetContent.setAttribute('aria-hidden', !showCollapsed);
+			toggleClass(VISUALLY_HIDDEN_CLASS, component.discreetContent, !showCollapsed);
+			component.contentFocusables.forEach(function (el) {
+				toggleTabIndex(el, !showCollapsed);
+			});
+
+			updateAriaControls();
 		}
 
 		function encodeComponent(string) {
@@ -120,12 +203,36 @@ export default {
 			let isPlaceholderSelected = (event.target.options[event.target.selectedIndex].getAttribute('placeholder') !== null);
 
 			if (event.type === 'focus') {
-				topicSelect.classList.remove(SELECT_INACTIVE_CLASS);
+				removeClass(SELECT_INACTIVE_CLASS, component.topicSelect);
 			}
 
 			if (event.type === 'blur' && isPlaceholderSelected) {
-				topicSelect.classList.add(SELECT_INACTIVE_CLASS);
+				addClass(SELECT_INACTIVE_CLASS, component.topicSelect);
 			}
+		}
+
+		/* helper functions */
+		function addClass (cssClass, el) {
+			el.classList.add(cssClass);
+		}
+
+		function removeClass (cssClass, el) {
+			el.classList.remove(cssClass);
+		}
+
+		function toggleClass (cssClass, el, force) {
+			if (force === false) {
+				removeClass(cssClass, el);
+			} else if (force || el.classList.contains(cssClass) === false) {
+				addClass(cssClass, el);
+			} else {
+				removeClass(cssClass, el);
+			}
+		}
+
+		function toggleTabIndex (el, boolean) {
+			let index = boolean ? 0 : -1;
+			el.setAttribute('tabindex', index);
 		}
 
 	}
