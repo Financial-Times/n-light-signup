@@ -21,6 +21,11 @@
             "name": "no-promo",
             "description": "Light signup form without promo image",
             "template": "demos/src/no-promo.mustache"
+        },
+        {
+            "name": "topic-dropdown",
+            "description": "Light signup form with promo & topic dropdown",
+            "template": "demos/src/topic-dropdown.mustache"
         }
     ],
     "browserFeatures": {
