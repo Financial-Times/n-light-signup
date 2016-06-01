@@ -26,7 +26,9 @@ export default {
 		const lightSignupForm = el.querySelector('[data-o-email-only-signup-form]');
 		const displaySection = el.querySelector('[data-o-email-only-signup-completion-message]');
 		const emailField = el.querySelector('input[name=email]');
+		const topicSelect = el.querySelector('[data-o-email-only-signup-dropdown]');
 		const invalidEmailMessage = el.querySelector('[data-o-email-only-signup-email-error]');
+		const SELECT_INACTIVE_CLASS = 'o-email-only-signup__select--inactive';
 
 		const pageLocation = window.location.href;
 
@@ -62,10 +64,15 @@ export default {
 		});
 
 		emailField.addEventListener('click', () => {
-			if (lightSignupForm.classList.contains('o-forms--error')) {
+			if (emailField.classList.contains('o-forms--error')) {
 				toggleValidationErrors();
 			}
 		});
+
+		if (topicSelect) {
+			topicSelect.addEventListener('focus', toggleSelectInactive);
+			topicSelect.addEventListener('blur', toggleSelectInactive);
+		}
 
 		// Validation helpers
 
@@ -74,7 +81,7 @@ export default {
 		}
 
 		function toggleValidationErrors() {
-			lightSignupForm.classList.toggle('o-forms--error');
+			emailField.classList.toggle('o-forms--error');
 			invalidEmailMessage.classList.toggle('o-email-only-signup__visually-hidden');
 		}
 
@@ -107,6 +114,18 @@ export default {
 			}
 
 			return str.join("&");
+		}
+
+		function toggleSelectInactive (event) {
+			let isPlaceholderSelected = (event.target.options[event.target.selectedIndex].getAttribute('placeholder') !== null);
+
+			if (event.type === 'focus') {
+				topicSelect.classList.remove(SELECT_INACTIVE_CLASS);
+			}
+
+			if (event.type === 'blur' && isPlaceholderSelected) {
+				topicSelect.classList.add(SELECT_INACTIVE_CLASS);
+			}
 		}
 
 	}

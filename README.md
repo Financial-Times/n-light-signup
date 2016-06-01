@@ -43,6 +43,7 @@ Some elements inside the form require specific data attributes so the JavaScript
 **[optional]** If a positioning element exists on the page the form will render as a child of it:
 
 - `data-o-email-only-signup-position-mvt`: Applied to an element to which the form will become a child [see below](#positioning-mvt) for more information.
+- `data-o-email-only-signup-dropdown`: Applied to a select element containing a `placeholder` option. Mocks a inactive/placeholder text on the select element. See demo for exmaple usage.
 
 ## Promo image
 You can optionally include a responsive promo image asset in the component. See the demos for examples.

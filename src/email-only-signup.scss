@@ -9,9 +9,17 @@
 @include oColorsSetUseCase(o-email-only-signup-input, border, 'teal-1');
 @include oColorsSetUseCase(o-email-only-signup-muted, text, 'grey-tint4');
 @include oColorsSetUseCase(o-email-only-signup-highlight, text, 'teal-1');
-@include oColorsSetUseCase(o-email-only-signup-link, text, 'teal-1');
+@include oColorsSetUseCase(o-email-only-signup-placeholder, text, 'grey-tint1');
+
+@mixin placeholder {
+  &::-webkit-input-placeholder {@content}
+            &:-moz-placeholder {@content}
+           &::-moz-placeholder {@content}
+       &:-ms-input-placeholder {@content}
+}
 
 .o-email-only-signup {
+
   @include oColorsFor(o-email-only-signup-box, border);
   position: relative;
   border-width: 2px;
@@ -22,17 +30,49 @@
 
   &:after {
     content: "";
-    display: block; 
+    display: block;
     clear: both;
   }
 
-}
+  &__heading {
+    @include oTypographySans(l);
+    @include oColorsFor(o-email-only-signup-muted, text);
+    margin: 0;
+    font-weight: 600;
+    padding-right: 25px; /* stop clipping with close icon */
+  }
 
-.o-email-only-signup__promo {
-  overflow: hidden; /* mask image */
+  &__tagline {
+    @include oTypographySans(m);
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  &__text {
+    @include oTypographySans(s);
+    font-size: 17px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  &__highlight {
+    @include oColorsFor(o-email-only-signup-highlight, text);
+    text-transform: uppercase;
+  }
+
+  &__no-spam {
+    @include oTypographySans(s);
+    margin: 0;
+    display: inline-block;
+  }
+
+  /* mask image */
+  &__promo {
+    overflow: hidden;
+  }
 
   /* responsive image inside promo */
-  .o-email-only-signup__promo-image {
+  &__promo-image {
     position: absolute;
     width: 100%;
     /* adjust for gutter */
@@ -42,105 +82,81 @@
     }
   }
 
-}
+  &__email {
+    @include oFormsCommonField();
 
-.o-email-only-signup__heading {
-  @include oTypographySans(l);
-  @include oColorsFor(o-email-only-signup-muted, text);
-  margin: 0;
-  font-weight: 600;
-  padding-right: 25px; /* stop clipping with close icon */
-}
+    /* custom placeholder color */
+    @include placeholder {
+      @include oColorsFor(o-email-only-signup-placeholder, text);
+      opacity: 1;
+    }
 
-.o-email-only-signup__tagline {
-  @include oTypographySans(m);
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
+    &.o-forms--error {
+      @include oFormsCommonFieldInvalid();
+    }
 
-.o-email-only-signup__text {
-  @include oTypographySans(s);
-  font-size: 17px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
+  }
 
-.light-signup__link {
-  @include oTypographySans(m);
-  @include oColorsFor(o-email-only-signup-link, text);
-  font-size: 18px;
-  text-decoration: none;
-}
+  &__email-error-msg {
+    @include oFormsErrorText();
+    margin-bottom: 0;
+  }
 
-.light-signup__highlight {
-  @include oColorsFor(o-email-only-signup-highlight, text);
-  text-transform: uppercase;
-}
+  &__select {
+    @include oFormsCommonField();
+    @include oFormsSelect();
 
-.o-email-only-signup__email {
-  @include oColorsFor(o-email-only-signup-input, border);
-  min-width: 250px;
-  margin-right: 10px;
-  width: 100%;
-  min-height: 20px; /* same height as standard button, minus forms padding */
-  margin-bottom: 5px;
-}
+    &--inactive {
+      @include oColorsFor(o-email-only-signup-placeholder, text);
+    }
+  }
 
-.o-email-only-signup__submit {
-  @include oButtons();
-  @include oButtonsTheme(standout);
-  text-transform: none;
-  height: 36px;
-  font-size: 18px;
-  max-width: 100px;
-  margin-bottom: 5px;
-}
+  &__submit {
+    @include oButtons($theme: standout);
+    text-transform: none;
+    height: 36px;
+    width: 100%;
+    margin-bottom: 5px;
+  }
 
-.o-email-only-signup__no-spam {
-  @include oTypographySans(s);
-  margin: 0;
-  padding-top: 10px;
-  display: inline-block;
-}
+  &__close {
+    @include oIconsGetIcon(
+      $icon-name: 'cross-disk',
+      $color: oColorsGetColorFor(o-email-only-signup-muted, text)
+    );
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: 0; /* remove browser default button styles */
+  }
 
-.o-email-only-signup__close {
-  @include oIconsGetIcon(
-    $icon-name: 'cross-disk',
-    $color: oColorsGetColorFor(o-email-only-signup-muted, text)
-  );
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-  position: absolute;
-  top: 0;
-  right: 0;
-  border: 0; /* remove browser default button styles */
-}
+  &__visually-hidden {
+    position: absolute;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    width: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+  }
 
-.o-email-only-signup__visually-hidden {
-  position: absolute;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  height: 1px;
-  width: 1px;
-  margin: -1px;
-  padding: 0;
-  border: 0;
-}
+  &__inner {
+    position: relative; /* fixes absolute close button position */
+  }
 
-.o-email-only-signup__inner {
-  position: relative; /* fixes absolute close button position */
-}
+  &__secondary {
+    @include oTypographySans(m);
+    @include oColorsFor(o-email-only-signup-muted, text);
+    margin: 15px 0;
+  }
 
-.o-email-only-signup__secondary {
-  @include oTypographySans(m);
-  @include oColorsFor(o-email-only-signup-muted, text);
-  margin: 15px 0;
-}
+  &__form-group {
+    padding: 0 0 10px;
+  }
 
-.o-email-only-signup__email-error-msg {
-  width: 100%;
-  display: inline-block;
-  margin-bottom: 0;
 }
