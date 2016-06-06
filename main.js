@@ -1,4 +1,4 @@
-import emailOnlySignup from './src/email-only-signup';
+import * as emailOnlySignup from './src/email-only-signup';
 
 export default {
 

@@ -1,12 +1,14 @@
 import defaultsDeep from 'lodash/object/defaultsDeep';
 import kebabCase from 'lodash/string/kebabCase';
+import _forEach from 'lodash/collection/forEach';
 
-const defaultOptions = {
-	signupUrl: '/signup/api/light-signup'
-};
-
-export function getResponseMsg(response, pageLocation) {
-	// Keep marketing copy somewhere
+/*
+ * convert a response 'code' to html message
+ * @param {String} response
+ * @param {String} pageLocation
+ * @returns {HTMLString}
+ */
+export function getResponseMsg (response, pageLocation) {
 	const responseMsg = {
 		'SUBSCRIPTION_SUCCESSFUL': 'Thanks – look out for your first briefing soon.',
 		'INVALID_REQUEST': 'Sorry, something went wrong. Please try again.',
@@ -14,226 +16,269 @@ export function getResponseMsg(response, pageLocation) {
 		'USER_ARCHIVED': 'It looks like you’ve signed up to the daily top stories summary email before. If you’re interested in getting access to more FT content, why not <a target="_blank" style="text-decoration:none;color:#27757B;" href="/products?segID=0801043" data-trackable="trial-archived">sign up to a 4 week Trial</a>?',
 		'USER_NOT_ANONYMOUS': `It looks like you already have an account with us. <a href="/login?location=${pageLocation}" style="text-decoration:none;color:#27757B;" data-trackable="sign-in">Sign in</a>.`
 	};
-
 	return responseMsg[response] ? responseMsg[response] : responseMsg.INVALID_REQUEST;
 }
 
-export default {
-	init(el, options = {}) {
-		defaultsDeep(options, optionsFromData(el), defaultOptions);
+/*
+ * Init component
+ * @param {Element} element - the element containing the form
+ * @options {Object} options - custom options
+ */
+export function init (element, options={}) {
 
-		const component = {
-			closeButton: el.querySelector('[data-o-email-only-signup-close]'),
-			content: el.querySelector('[data-o-email-only-signup-content]') || null,
-			contentFocusables: null,
-			discreetContent: el.querySelector('[data-o-email-only-signup-discreet-content]') || null,
-			discreetContentFocusables: null,
-			displaySection: el.querySelector('[data-o-email-only-signup-completion-message]'),
-			emailField: el.querySelector('input[name=email]'),
-			form: el.querySelector('[data-o-email-only-signup-form]'),
-			invalidEmailMessage: el.querySelector('[data-o-email-only-signup-email-error]'),
-			openButton: el.querySelector('[data-o-email-only-signup-open]') || null,
-			topicSelect: el.querySelector('[data-o-email-only-signup-dropdown]') || null,
-			ariaControls: el.querySelectorAll('[aria-controls]') || null
-		};
+	const pageLocation = window.location.href;
 
-		const VISUALLY_HIDDEN_CLASS = 'o-email-only-signup__visually-hidden';
-		const FORM_ERROR_CLASS = 'o-forms--error';
-		const SELECT_INACTIVE_CLASS = 'o-email-only-signup__select--inactive';
+	const VISUALLY_HIDDEN_CLASS = 'o-email-only-signup__visually-hidden';
+	const FORM_ERROR_CLASS = 'o-forms--error';
+	const SELECT_INACTIVE_CLASS = 'o-email-only-signup__select--inactive';
 
-		const pageLocation = window.location.href;
-		const discreetMode = (component.openButton && component.content && component.discreetContent);
+	const o = {
+		self: element,
+		closeButton: element.querySelector('[data-o-email-only-signup-close]'),
+		content: element.querySelector('[data-o-email-only-signup-content]') || null,
+		contentFocusables: null,
+		discreetContent: element.querySelector('[data-o-email-only-signup-discreet-content]') || null,
+		discreetContentFocusables: null,
+		displaySection: element.querySelector('[data-o-email-only-signup-completion-message]'),
+		emailField: element.querySelector('input[name=email]'),
+		form: element.querySelector('[data-o-email-only-signup-form]'),
+		invalidEmailMessage: element.querySelector('[data-o-email-only-signup-email-error]'),
+		openButton: element.querySelector('[data-o-email-only-signup-open]') || null,
+		topicSelect: element.querySelector('[data-o-email-only-signup-dropdown]') || null,
+		ariaControls: toArray(element.querySelectorAll('[aria-controls]')) || null
+	};
 
-		enhanceForm();
+	const defaultOptions = {
+		signupUrl: '/signup/api/light-signup',
+		collapsible: (o.openButton && o.content && o.discreetContent)
+	};
 
-		// Handle user interaction
-		component.form.addEventListener('submit', (e) => {
-			e.preventDefault();
+	defaultsDeep(options, optionsFromData(element, defaultOptions), defaultOptions);
 
-			if (isValidEmail(component.emailField.value)) {
-				const opts = {
-					method: 'POST',
-					headers: {
-						'Content-type': 'application/x-www-form-urlencoded'
-					},
-					credentials: 'include',
-					body: serializeFormInputs(e.target)
-				};
+	enhanceComponent();
 
-				fetch(options.signupUrl, opts)
-					.then(response => response.text())
-					.then(response => {
-				component.displaySection.innerHTML = getResponseMsg(response, pageLocation);
-					})
-					.catch(err => console.log(err));
+	// Event Listeners
+	o.form.addEventListener('submit', (e) => {
+		e.preventDefault();
 
-			} else {
-				toggleEmailValidationErrors();
-			}
+		if (isValidEmail(o.emailField.value)) {
+			const opts = {
+				method: 'POST',
+				headers: {
+					'Content-type': 'application/x-www-form-urlencoded'
+				},
+				credentials: 'include',
+				body: serializeFormInputs(e.target)
+			};
+
+			fetch(options.signupUrl, opts)
+				.then(response => response.text())
+				.then(response => {
+					displayComponentMessage(getResponseMsg(response, pageLocation));
+				})
+				.catch(err => console.log(err));
+
+		} else {
+			toggleComponentValidationErrors();
+		}
+	});
+
+	o.emailField.addEventListener('click', () => {
+		if (o.emailField.classList.contains(FORM_ERROR_CLASS)) {
+			toggleComponentValidationErrors();
+		}
+	});
+
+	o.closeButton.addEventListener('click', () => {
+		if (options.collapsible) {
+			showComponentCollapsed(true);
+		} else {
+			o.self.style.display = 'none';
+			o.self.setAttribute('aria-hidden', true);
+			updateComponentAriaControls();
+		}
+	});
+
+	if (o.topicSelect) {
+		o.topicSelect.addEventListener('focus', toggleComponentSelectInactive);
+		o.topicSelect.addEventListener('blur', toggleComponentSelectInactive);
+	}
+
+	if (options.collapsible) {
+		o.openButton.addEventListener('click', () => {
+			showComponentCollapsed(false);
+		});
+	}
+
+	// transfrom core to enhanced experience
+	function enhanceComponent () {
+		removeClass(VISUALLY_HIDDEN_CLASS, o.closeButton);
+		updateComponentAriaControls();
+		if (options.collapsible) {
+			o.contentFocusables = findFoucsablesInEl(o.content);
+			o.discreetContentFocusables = findFoucsablesInEl(o.discreetContent);
+		}
+	}
+
+	// toggle the email validation errors
+	function toggleComponentValidationErrors () {
+		toggleClass(FORM_ERROR_CLASS, o.emailField);
+		toggleClass(VISUALLY_HIDDEN_CLASS, o.invalidEmailMessage);
+	}
+
+	// collapse component, aka. show discreet state
+	function showComponentCollapsed (showCollapsed) {
+
+		o.content.setAttribute('aria-hidden', showCollapsed);
+		toggleClass(VISUALLY_HIDDEN_CLASS, o.content, showCollapsed);
+		_forEach(o.contentFocusables, el => {
+			toggleTabIndex(el, !showCollapsed);
 		});
 
-		component.emailField.addEventListener('click', () => {
-			if (component.emailField.classList.contains(FORM_ERROR_CLASS)) {
-				toggleEmailValidationErrors();
-			}
+		o.discreetContent.setAttribute('aria-hidden', !showCollapsed);
+		toggleClass(VISUALLY_HIDDEN_CLASS, o.discreetContent, !showCollapsed);
+		_forEach(o.discreetContentFocusables, el => {
+			toggleTabIndex(el, showCollapsed);
 		});
 
-		if (component.topicSelect) {
-			component.topicSelect.addEventListener('focus', toggleSelectInactive);
-			component.topicSelect.addEventListener('blur', toggleSelectInactive);
+		updateComponentAriaControls();
+	}
+
+	// toggle the inactive styles on dropdown component to allow mock 'placeholder'
+	function toggleComponentSelectInactive (event) {
+		let isPlaceholderSelected = (event.target.options[event.target.selectedIndex].getAttribute('placeholder') !== null);
+
+		if (event.type === 'focus') {
+			removeClass(SELECT_INACTIVE_CLASS, o.topicSelect);
 		}
 
-		component.closeButton.addEventListener('click', () => {
-			if (discreetMode) {
-				showDiscreetState(true);
-			} else {
-				el.style.display = 'none';
-				el.setAttribute('aria-hidden', true);
-				updateAriaControls();
+		if (event.type === 'blur' && isPlaceholderSelected) {
+			addClass(SELECT_INACTIVE_CLASS, o.topicSelect);
+		}
+	}
+
+	/*
+	 * display a message in the component
+	 * @param {HTML String} message - content to inject
+	 */
+	function displayComponentMessage (message) {
+		o.displaySection.innerHTML = message;
+	}
+
+	//update 'aria-expanded' attr to match an 'aria-controls' element target state
+	function updateComponentAriaControls () {
+		_forEach(o.ariaControls, el => {
+			const target = o.self.querySelector('#' + el.getAttribute('aria-controls'));
+			if (target) {
+				const targetIsHidden = (target && target.getAttribute('aria-hidden') === 'true');
+				el.setAttribute('aria-expanded', !targetIsHidden);
 			}
 		});
-
-		if (discreetMode) {
-			component.openButton.addEventListener('click', () => {
-				showDiscreetState(false);
-			});
-		}
-
-		// transfrom core to enhanced experience
-		function enhanceForm () {
-			removeClass(VISUALLY_HIDDEN_CLASS, component.closeButton);
-			updateAriaControls();
-			if (discreetMode) {
-				component.contentFocusables = findFoucsablesInEl(component.content);
-				component.discreetContentFocusables = findFoucsablesInEl(component.discreetContent);
-			}
-		}
-
-		function updateAriaControls () {
-			if (component.ariaControls) {
-				for (let i=0; i<component.ariaControls.length; i++) {
-					let self = component.ariaControls[i];
-					let targetId = self.getAttribute('aria-controls');
-					let target = el.querySelector('#' + targetId);
-					let targetIsHidden = (target.getAttribute('aria-hidden') === 'true');
-					self.setAttribute('aria-expanded', !targetIsHidden);
-				}
-			}
-		}
-
-		function findFoucsablesInEl (element) {
-			let arr = [];
-			const tabEls = [
-				'input',
-				'button',
-				'a'
-			];
-			tabEls.forEach(function (selector) {
-				let nodelist = element.querySelectorAll(selector);
-				// let arr = [];
-				// for (var i = nodelist.length; i--; arr.unshift(nodelist[i]));
-				// tabs = tabs.concat(arr);
-				arr = arr.concat(Array.prototype.slice.call(nodelist));
-			});
-			return arr;
-		}
-
-		// Validation helpers
-
-		function isValidEmail(email) {
-			return /(.+)@(.+)/.test(email);
-		}
-
-		function toggleEmailValidationErrors() {
-			toggleClass(FORM_ERROR_CLASS, component.emailField);
-			toggleClass(VISUALLY_HIDDEN_CLASS, component.invalidEmailMessage);
-		}
-
-		function showDiscreetState(showCollapsed) {
-
-			component.content.setAttribute('aria-hidden', showCollapsed);
-			toggleClass(VISUALLY_HIDDEN_CLASS, component.content, showCollapsed);
-			component.contentFocusables.forEach(function (el) {
-				toggleTabIndex(el, showCollapsed);
-			});
-			// make all focus els -1 inside content
-
-
-			component.discreetContent.setAttribute('aria-hidden', !showCollapsed);
-			toggleClass(VISUALLY_HIDDEN_CLASS, component.discreetContent, !showCollapsed);
-			component.contentFocusables.forEach(function (el) {
-				toggleTabIndex(el, !showCollapsed);
-			});
-
-			updateAriaControls();
-		}
-
-		function encodeComponent(string) {
-			return encodeURIComponent(string.trim()).replace('%20', '+');
-		}
-
-		function optionsFromData(el) {
-			const options = {};
-			Object.keys(defaultOptions).forEach(key => {
-				// convert optionKeyLikeThis to data-o-email-only-signup-option-key-like-this
-				const attr = 'data-o-email-only-signup-' + kebabCase(key);
-				if(el.hasAttribute(attr)) {
-					options[key] = el.getAttribute(attr);
-				}
-			});
-
-			return options;
-		}
-
-		function serializeFormInputs(form) {
-			const inputs = form.elements;
-			let str = [];
-
-			for (let i=0; i<inputs.length; i++) {
-				let field = form.elements[i];
-				if (field.name && field.type !== 'submit' && field.type !== 'button') {
-					str.push(`${encodeComponent(field.name)}=${encodeComponent(field.value)}`);
-				}
-			}
-
-			return str.join("&");
-		}
-
-		function toggleSelectInactive (event) {
-			let isPlaceholderSelected = (event.target.options[event.target.selectedIndex].getAttribute('placeholder') !== null);
-
-			if (event.type === 'focus') {
-				removeClass(SELECT_INACTIVE_CLASS, component.topicSelect);
-			}
-
-			if (event.type === 'blur' && isPlaceholderSelected) {
-				addClass(SELECT_INACTIVE_CLASS, component.topicSelect);
-			}
-		}
-
-		/* helper functions */
-		function addClass (cssClass, el) {
-			el.classList.add(cssClass);
-		}
-
-		function removeClass (cssClass, el) {
-			el.classList.remove(cssClass);
-		}
-
-		function toggleClass (cssClass, el, force) {
-			if (force === false) {
-				removeClass(cssClass, el);
-			} else if (force || el.classList.contains(cssClass) === false) {
-				addClass(cssClass, el);
-			} else {
-				removeClass(cssClass, el);
-			}
-		}
-
-		function toggleTabIndex (el, boolean) {
-			let index = boolean ? 0 : -1;
-			el.setAttribute('tabindex', index);
-		}
-
 	}
 };
+
+/*
+ * Extract options from element data attributes
+ * @param {Element} el
+ * @param {Object} options - Containing keys to match attrs
+ * @returns {Object}
+ */
+function optionsFromData (el, opts) {
+	const options = {};
+	_forEach(Object.keys(opts), key => {
+		// convert optionKeyLikeThis to data-o-email-only-signup-option-key-like-this
+		const attr = 'data-o-email-only-signup-' + kebabCase(key);
+		if (el.hasAttribute(attr)) {
+			options[key] = el.getAttribute(attr);
+		}
+	});
+	return options;
+}
+
+/*
+ * find and return an array of 'focusable' elements in a given element
+ * @param {Element} el
+ * @returns {Array} - Array of Elements, can be empty
+ */
+function findFoucsablesInEl (el) {
+	let arr = [];
+	_forEach(['input', 'button', 'a'], selector => {
+		let nodeList = el.querySelectorAll(selector);
+		if (nodeList && nodeList.length > 0) {
+			arr = arr.concat(toArray(nodeList));
+		}
+	});
+	return arr;
+}
+
+/*
+ * regex from: https://www.w3.org/TR/html5/forms.html#valid-e-mail-address
+ * @param {String} email - string to validate as email
+ * @returns {Boolean} - true: string is a valid email, false: not valid
+ */
+function isValidEmail (email) {
+	return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(email);
+}
+
+/*
+ * For application/x-www-form-urlencoded, spaces are to be replaced by '+',
+ * so follow with an additional replacement of "%20" with "+"
+ * @param {String} string - string to encode
+ * @returns {String}
+ */
+function encodeComponent (string) {
+	return encodeURIComponent(string.trim()).replace('%20', '+');
+}
+
+/*
+ * serialize a forms inputs
+ * @param {Element} form - the form Element to serialize
+ * @returns {String}
+ */
+function serializeFormInputs (form) {
+	const inputs = toArray(form.elements);
+	let str = [];
+	_forEach(inputs, el => {
+		if (el.name && el.type !== 'submit' && el.type !== 'button') {
+			str.push(`${encodeComponent(el.name)}=${encodeComponent(el.value)}`);
+		}
+	});
+	return str.join('&');
+}
+
+// add css class to element
+function addClass (cssClass, el) {
+	el.classList.add(cssClass);
+}
+
+// remove css class from element
+function removeClass (cssClass, el) {
+	el.classList.remove(cssClass);
+}
+
+/*
+ * toggle css class on element
+ * @param {Boolean} force - true: add the class, false: remove the class
+ */
+function toggleClass (cssClass, el, force) {
+	if (force === false) {
+		removeClass(cssClass, el);
+	} else if (force === true || el.classList.contains(cssClass) === false) {
+		addClass(cssClass, el);
+	} else {
+		removeClass(cssClass, el);
+	}
+}
+
+// toggle tabindex on element
+function toggleTabIndex (el, boolean) {
+	let index = boolean ? 0 : -1;
+	el.setAttribute('tabindex', index);
+}
+
+// check array-like and return converted array
+function toArray (arrayLike) {
+	if (arrayLike && arrayLike.length > 0) {
+		return Array.from(arrayLike);
+	}
+}
