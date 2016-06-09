@@ -39,11 +39,20 @@ Some elements inside the form require specific data attributes so the JavaScript
 - `data-o-email-only-signup-close`: Applied to the close button
 - `data-o-email-only-signup-completion-message`: Applied to an element that will be replaced with a message when signup is complete
 - `data-o-email-only-signup-email-error`: Applied to an element containing a message to display when the entered email is invalid
+- `data-o-email-only-signup-dropdown`: **[optional]** Applied to a select element containing a `placeholder` option. Mocks a inactive/placeholder text on the select element. See demo for exmaple usage.
 
-**[optional]** If a positioning element exists on the page the form will render as a child of it:
+**Collapsible state [optional]** These data attributes MUST be added to elements to enable a collapsible state (as well as `data-o-email-only-signup-close`):
+
+- `data-o-email-only-signup-content`: Applied to the parent element of the content to display in the "open"/default state
+- `data-o-email-only-signup-discreet-content`: Applied to the parent of the content to show in the collapsed aka. discreet state
+- `data-o-email-only-signup-open`: Applied to the open button (this element MUST NOT be a child of `data-o-email-only-signup-content`, otherwise it will become hidden.
+
+In the collapsed state `data-o-email-only-signup-content` will be visually hidden (and have it's children "focusable" elements `tabindex` set to `-1`) and `data-o-email-only-signup-discreet-content` will be displayed. In the "open"/default state this will be reversed.
+
+
+**Positioning element [optional]** An element with this attribute MUST be present on the page:
 
 - `data-o-email-only-signup-position-mvt`: Applied to an element to which the form will become a child [see below](#positioning-mvt) for more information.
-- `data-o-email-only-signup-dropdown`: Applied to a select element containing a `placeholder` option. Mocks a inactive/placeholder text on the select element. See demo for exmaple usage.
 
 ## Promo image
 You can optionally include a responsive promo image asset in the component. See the demos for examples.

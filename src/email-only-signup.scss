@@ -18,15 +18,24 @@
        &:-ms-input-placeholder {@content}
 }
 
+.o-email-only-signup__discreet {
+  position: relative;
+  padding-bottom: 15px;
+}
+
 .o-email-only-signup {
 
   @include oColorsFor(o-email-only-signup-box, border);
   position: relative;
   border-width: 2px;
   border-style: solid none;
-  padding: 15px 15px 0;
+  padding: 15px 0 0;
   margin: 15px 0;
   clear: both;
+
+  @include oGridRespondTo(S) {
+    padding: 15px 15px 0;
+  }
 
   &:after {
     content: "";
@@ -40,6 +49,13 @@
     margin: 0;
     font-weight: 600;
     padding-right: 25px; /* stop clipping with close icon */
+
+    .o-email-only-signup__discreet & {
+      @include oTypographySans(m);
+      font-weight: 600;
+      padding-right: 0;
+    }
+
   }
 
   &__tagline {
@@ -132,6 +148,34 @@
     top: 0;
     right: 0;
     border: 0; /* remove browser default button styles */
+  }
+
+  &__open {
+    @include oTypographySans(s);
+    @include oColorsFor(o-email-only-signup-muted, text);
+    @include oIconsGetIcon(
+      'arrow-down',
+      oColorsGetColorFor(o-email-only-signup-muted, text),
+      20
+    );
+    display: inline-block;
+    width: auto;
+    height: 20px; /* height + margin matches height of h3 */
+    margin: 2px 0; /* matching line heights causes icon to be too big */
+    padding-right: 25px;
+    background-position-x: 100%;
+    cursor: pointer;
+    float: right;
+    border: 0; /* remove browser default button styles */
+
+    text-indent: -9999px;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+
+    @include oGridRespondTo(S) {
+        text-indent: 0;
+    }
   }
 
   &__visually-hidden {
