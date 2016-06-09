@@ -166,7 +166,7 @@ export function init (element, options={}) {
 
 	//update 'aria-expanded' attr to match an 'aria-controls' element target state
 	function updateComponentAriaControls () {
-		if (o.ariaControls && o.ariaControls.length > 0) {
+		if (o.ariaControls) {
 			o.ariaControls.forEach(el => {
 				const target = o.self.querySelector('#' + el.getAttribute('aria-controls'));
 				if (target) {
