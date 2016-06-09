@@ -1,6 +1,5 @@
 import defaultsDeep from 'lodash/object/defaultsDeep';
 import kebabCase from 'lodash/string/kebabCase';
-import _forEach from 'lodash/collection/forEach';
 
 /*
  * convert a response 'code' to html message
@@ -115,8 +114,8 @@ export function init (element, options={}) {
 		removeClass(VISUALLY_HIDDEN_CLASS, o.closeButton);
 		updateComponentAriaControls();
 		if (options.collapsible) {
-			o.contentFocusables = findFoucsablesInEl(o.content);
-			o.discreetContentFocusables = findFoucsablesInEl(o.discreetContent);
+			o.contentFocusables = findFocusablesInEl(o.content);
+			o.discreetContentFocusables = findFocusablesInEl(o.discreetContent);
 		}
 	}
 
@@ -131,13 +130,13 @@ export function init (element, options={}) {
 
 		o.content.setAttribute('aria-hidden', showCollapsed);
 		toggleClass(VISUALLY_HIDDEN_CLASS, o.content, showCollapsed);
-		_forEach(o.contentFocusables, el => {
+		o.contentFocusables.forEach(el => {
 			toggleTabIndex(el, !showCollapsed);
 		});
 
 		o.discreetContent.setAttribute('aria-hidden', !showCollapsed);
 		toggleClass(VISUALLY_HIDDEN_CLASS, o.discreetContent, !showCollapsed);
-		_forEach(o.discreetContentFocusables, el => {
+		o.discreetContentFocusables.forEach(el => {
 			toggleTabIndex(el, showCollapsed);
 		});
 
@@ -167,13 +166,15 @@ export function init (element, options={}) {
 
 	//update 'aria-expanded' attr to match an 'aria-controls' element target state
 	function updateComponentAriaControls () {
-		_forEach(o.ariaControls, el => {
-			const target = o.self.querySelector('#' + el.getAttribute('aria-controls'));
-			if (target) {
-				const targetIsHidden = (target && target.getAttribute('aria-hidden') === 'true');
-				el.setAttribute('aria-expanded', !targetIsHidden);
-			}
-		});
+		if (o.ariaControls && o.ariaControls.length > 0) {
+			o.ariaControls.forEach(el => {
+				const target = o.self.querySelector('#' + el.getAttribute('aria-controls'));
+				if (target) {
+					const targetIsHidden = (target && target.getAttribute('aria-hidden') === 'true');
+					el.setAttribute('aria-expanded', !targetIsHidden);
+				}
+			});
+		}
 	}
 };
 
@@ -185,7 +186,7 @@ export function init (element, options={}) {
  */
 function optionsFromData (el, opts) {
 	const options = {};
-	_forEach(Object.keys(opts), key => {
+	Object.keys(opts).forEach(key => {
 		// convert optionKeyLikeThis to data-o-email-only-signup-option-key-like-this
 		const attr = 'data-o-email-only-signup-' + kebabCase(key);
 		if (el.hasAttribute(attr)) {
@@ -200,9 +201,9 @@ function optionsFromData (el, opts) {
  * @param {Element} el
  * @returns {Array} - Array of Elements, can be empty
  */
-function findFoucsablesInEl (el) {
+function findFocusablesInEl (el) {
 	let arr = [];
-	_forEach(['input', 'button', 'a'], selector => {
+	['input', 'button', 'a'].forEach(selector => {
 		let nodeList = el.querySelectorAll(selector);
 		if (nodeList && nodeList.length > 0) {
 			arr = arr.concat(toArray(nodeList));
@@ -238,7 +239,7 @@ function encodeComponent (string) {
 function serializeFormInputs (form) {
 	const inputs = toArray(form.elements);
 	let str = [];
-	_forEach(inputs, el => {
+	inputs.forEach(el => {
 		if (el.name && el.type !== 'submit' && el.type !== 'button') {
 			str.push(`${encodeComponent(el.name)}=${encodeComponent(el.value)}`);
 		}
