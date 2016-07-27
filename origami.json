@@ -1,7 +1,7 @@
 {
     "description": "Next FT - light sign-up",
     "origamiType": "module",
-    "origamiCategory": "component",
+    "origamiCategory": "components",
     "origamiVersion": 1,
     "support": "next.team@ft.com",
     "supportStatus": "experimental",
