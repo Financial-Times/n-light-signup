@@ -89,15 +89,17 @@ export function init (element, options={}) {
 		}
 	});
 
-	o.closeButton.addEventListener('click', () => {
-		if (options.collapsible) {
-			showComponentCollapsed(true);
-		} else {
-			o.self.style.display = 'none';
-			o.self.setAttribute('aria-hidden', true);
-			updateComponentAriaControls();
-		}
-	});
+	if (o.closeButton) {
+		o.closeButton.addEventListener('click', () => {
+			if (options.collapsible) {
+				showComponentCollapsed(true);
+			} else {
+				o.self.style.display = 'none';
+				o.self.setAttribute('aria-hidden', true);
+				updateComponentAriaControls();
+			}
+		});
+	}
 
 	if (o.topicSelect) {
 		o.topicSelect.addEventListener('focus', toggleComponentSelectInactive);
@@ -112,7 +114,9 @@ export function init (element, options={}) {
 
 	// transfrom core to enhanced experience
 	function enhanceComponent () {
-		removeClass(VISUALLY_HIDDEN_CLASS, o.closeButton);
+		if (o.closeButton) {
+			removeClass(VISUALLY_HIDDEN_CLASS, o.closeButton);
+		}
 		updateComponentAriaControls();
 		if (options.collapsible) {
 			o.contentFocusables = findFocusablesInEl(o.content);
