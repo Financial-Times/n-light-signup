@@ -43,6 +43,24 @@
     clear: both;
   }
 
+  &--inline {
+    float: left;
+    margin-top: 0;
+
+    @include oGridRespondTo(S) {
+      max-width: 300px;
+      margin-right: 24px;
+    }
+  }
+
+  &--coloured-background {
+    box-sizing: border-box;
+    padding-left: 15px;
+    padding-right: 15px;
+    border: 1px solid oColorsGetPaletteColor('pink-tint3');
+    background-color: oColorsGetPaletteColor('warm-5');
+  }
+
   &__heading {
     @include oTypographySans(l);
     @include oColorsFor(o-email-only-signup-muted, text);
@@ -54,6 +72,11 @@
       @include oTypographySans(m);
       font-weight: 600;
       padding-right: 0;
+    }
+
+    &:first-child {
+      background: url('https://next-geebee.ft.com/image/v1/images/raw/https%3a%2f%2fnext-geebee.ft.com%2fassets%2fmyft-alerts-prefs%2fenvelope.svg?source=next&fit=scale-down&compression=best&width=40') 100% 0 no-repeat;
+      padding-right: 45px;
     }
 
   }

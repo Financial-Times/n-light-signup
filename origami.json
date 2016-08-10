@@ -27,6 +27,21 @@
             "name": "topic-dropdown",
             "description": "Light signup form with promo & topic dropdown",
             "template": "demos/src/topic-dropdown.mustache"
+        },
+        {
+            "name": "inline",
+            "description": "Light signup form which can appear inline with content",
+            "template": "demos/src/inline.mustache"
+        },
+        {
+            "name": "coloured-background",
+            "description": "Light signup form with a coloured background",
+            "template": "demos/src/coloured-background.mustache"
+        },
+        {
+            "name": "non-collapsible",
+            "description": "Light signup form which doesn’t collapse",
+            "template": "demos/src/non-collapsible.mustache"
         }
     ],
     "browserFeatures": {
