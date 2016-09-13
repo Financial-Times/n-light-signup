@@ -162,7 +162,7 @@
     @include oIconsGetIcon(
       $icon-name: 'cross',
       $color: oColorsGetColorFor(o-email-only-signup-muted, text),
-			$iconset-version: 1
+      $iconset-version: 1
     );
     display: inline-block;
     width: 40px;
@@ -181,7 +181,7 @@
       'arrow-down',
       oColorsGetColorFor(o-email-only-signup-muted, text),
       20,
-			$iconset-version: 1
+      $iconset-version: 1
     );
     display: inline-block;
     width: auto;
