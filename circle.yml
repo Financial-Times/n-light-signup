@@ -7,3 +7,7 @@ dependencies:
     - npm install bower
     - bower install
     - make build
+test:
+  override:
+    - obt test
+    - ovt verify
