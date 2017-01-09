@@ -20,7 +20,7 @@
     "o-buttons": "^4.0.1",
     "o-colors": "^3.3.2",
     "o-forms": "^2.0.0",
-    "o-icons": "^4.4.2",
+    "o-icons": ">=4.4.2 <6",
     "o-typography": "^4.3.1"
   }
 }
