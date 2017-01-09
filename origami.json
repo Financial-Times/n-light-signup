@@ -48,6 +48,12 @@
             "description": "Light signup form which doesn’t collapse",
             "template": "demos/src/non-collapsible.mustache",
             "path": "/demos/non-collapsible.html"
+        },
+        {
+            "name": "pa11y",
+            "description": "",
+            "template": "demos/src/pa11y.mustache",
+            "hidden": true
         }
     ],
     "browserFeatures": {
