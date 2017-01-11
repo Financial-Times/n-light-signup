@@ -4,7 +4,6 @@ import * as fixtures from './helpers/fixtures';
 
 const visuallyHiddenClass = 'o-email-only-signup__visually-hidden';
 
-
 describe('Email only sign up', () => {
 	it('is defined', () => {
 		proclaim.isFunction(oEmailOnlySignup.init);
@@ -156,6 +155,26 @@ describe('Email only sign up', () => {
 				emailInput.click();			
 		
 				proclaim.ok(errorMessage.classList.contains(visuallyHiddenClass));
+			});
+		});
+		
+		describe("Positioning", () => {
+			beforeEach(() => {
+				fixtures.standardHtml();
+			});
+
+			afterEach(() => {
+				fixtures.reset();		  
+			});
+			
+			it("will position itself as a child of a [data-o-email-only-signup-position-mvt] element if present", () => {
+				const mvtElement = document.createElement('div');
+				mvtElement.setAttribute('data-o-email-only-signup-position-mvt', 'true');
+				document.body.append(mvtElement);
+				
+				oEmailOnlySignup.init();
+				const component = document.querySelector('[data-o-component~="o-email-only-signup"]');
+				proclaim.strictEqual(component.parentElement.getAttribute('data-o-email-only-signup-position-mvt'), 'true');
 			});
 		});
 	});
