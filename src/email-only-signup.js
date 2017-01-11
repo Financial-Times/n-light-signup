@@ -60,7 +60,6 @@ export function init (element, options={}) {
 	// Event Listeners
 	o.form.addEventListener('submit', (e) => {
 		e.preventDefault();
-
 		if (isValidEmail(o.emailField.value)) {
 			const opts = {
 				method: 'POST',
