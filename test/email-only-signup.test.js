@@ -1,12 +1,12 @@
 import proclaim from 'proclaim';
-import oEmailOnlySignup from '../main';
+import oEmailOnlySignup from '../src/email-only-signup';
 import * as fixtures from './helpers/fixtures';
 
 const visuallyHiddenClass = 'o-email-only-signup__visually-hidden';
 
 describe('Email only sign up', () => {
 	it('is defined', () => {
-		proclaim.isFunction(oEmailOnlySignup.init);
+		proclaim.isFunction(oEmailOnlySignup);
 	});
 	
 	describe("Component gets enhanced from a core experience", () => {
@@ -16,14 +16,13 @@ describe('Email only sign up', () => {
 
 		it("has a visible dismiss button", () => {
 			fixtures.standardHtml();
-			oEmailOnlySignup.init();
+			oEmailOnlySignup();
 			const dismiss = document.querySelector('[data-o-email-only-signup-close]');
 			proclaim.notOk(dismiss.classList.contains(visuallyHiddenClass));
 		});
-		
 		it("updates the ARIA attributes", () => {
 			fixtures.collapsibleHtml();
-			oEmailOnlySignup.init();
+			oEmailOnlySignup();
 			const dismiss = document.querySelector('[data-o-email-only-signup-close]');
 			proclaim.strictEqual(dismiss.getAttribute('aria-expanded'), 'true');
 		});
@@ -36,7 +35,7 @@ describe('Email only sign up', () => {
 
 		it("hides the full component", () => {
 			fixtures.standardHtml();
-			oEmailOnlySignup.init();
+			oEmailOnlySignup();
 			const componentEl = document.querySelector('[data-o-component~="o-email-only-signup"]');
 			const dismiss = document.querySelector('[data-o-email-only-signup-close]');
 			dismiss.click();
@@ -46,7 +45,7 @@ describe('Email only sign up', () => {
 
 		it("collapses down to the discreet version when the collapsible option is set", () => {
 			fixtures.collapsibleHtml();
-			oEmailOnlySignup.init('body', {collapsible: true});
+			oEmailOnlySignup('body', {collapsible: true});
 			
 			const contentEl = document.querySelector('[data-o-email-only-signup-content]');
 			const discreetEl = document.querySelector('[data-o-email-only-signup-discreet-content]');
@@ -62,7 +61,7 @@ describe('Email only sign up', () => {
 		
 		it("it is possible to expand to full content version after being collapsed", () => {
 			fixtures.collapsibleHtml();
-			oEmailOnlySignup.init('body', {collapsible: true});
+			oEmailOnlySignup('body', {collapsible: true});
 			
 			const contentEl = document.querySelector('[data-o-email-only-signup-content]');
 			const discreetEl = document.querySelector('[data-o-email-only-signup-discreet-content]');
@@ -78,7 +77,7 @@ describe('Email only sign up', () => {
 			proclaim.strictEqual(discreetEl.getAttribute('aria-hidden'), 'true');
 		});
 	});
-	
+		
 	describe("Submiting the form", () => {
 		beforeEach(() => {
 			sinon.stub(window, 'fetch');
@@ -99,7 +98,7 @@ describe('Email only sign up', () => {
 
 		it("makes a post request to the sign up api", () => {
 			fixtures.standardHtml();
-			oEmailOnlySignup.init();
+			oEmailOnlySignup();
 			const form = document.querySelector('[data-o-email-only-signup-form]');
 			const emailInput = form.querySelector('#email');
 			const submit = form.querySelector('.o-email-only-signup__submit');
@@ -112,11 +111,10 @@ describe('Email only sign up', () => {
 			proclaim.strictEqual(window.fetch.getCall(0).args[1].body, 'email=person%40ft.com');
 			proclaim.strictEqual(window.fetch.getCall(0).args[1].method, 'POST');
 		});
-		
 		describe("Form validation", () => {
 			it("does not make a post request when an invalid email address is entered", () => {
 				fixtures.standardHtml();
-				oEmailOnlySignup.init();
+				oEmailOnlySignup();
 				const form = document.querySelector('[data-o-email-only-signup-form]');
 				const emailInput = form.querySelector('#email');
 				const submit = form.querySelector('.o-email-only-signup__submit');
@@ -130,7 +128,7 @@ describe('Email only sign up', () => {
 
 			it("shows an error message when an invalid email address is entered", () => {
 				fixtures.standardHtml();
-				oEmailOnlySignup.init();
+				oEmailOnlySignup();
 				const form = document.querySelector('[data-o-email-only-signup-form]');
 				const emailInput = form.querySelector('#email');
 				const submit = form.querySelector('.o-email-only-signup__submit');
@@ -144,7 +142,7 @@ describe('Email only sign up', () => {
 			
 			it("the error message is dismissed when the input is clicked on", () => {
 				fixtures.standardHtml();
-				oEmailOnlySignup.init();
+				oEmailOnlySignup();
 				const form = document.querySelector('[data-o-email-only-signup-form]');
 				const emailInput = form.querySelector('#email');
 				const submit = form.querySelector('.o-email-only-signup__submit');
@@ -157,25 +155,24 @@ describe('Email only sign up', () => {
 				proclaim.ok(errorMessage.classList.contains(visuallyHiddenClass));
 			});
 		});
-		
-		describe("Positioning", () => {
-			beforeEach(() => {
-				fixtures.standardHtml();
-			});
+	});
+	describe("Positioning", () => {
+		beforeEach(() => {
+			fixtures.standardHtml();
+		});
 
-			afterEach(() => {
-				fixtures.reset();		  
-			});
+		afterEach(() => {
+			fixtures.reset();		  
+		});
+		
+		it("will position itself as a child of a [data-o-email-only-signup-position-mvt] element if present", () => {
+			const mvtElement = document.createElement('div');
+			mvtElement.setAttribute('data-o-email-only-signup-position-mvt', 'true');
+			document.body.append(mvtElement);
 			
-			it("will position itself as a child of a [data-o-email-only-signup-position-mvt] element if present", () => {
-				const mvtElement = document.createElement('div');
-				mvtElement.setAttribute('data-o-email-only-signup-position-mvt', 'true');
-				document.body.append(mvtElement);
-				
-				oEmailOnlySignup.init();
-				const component = document.querySelector('[data-o-component~="o-email-only-signup"]');
-				proclaim.strictEqual(component.parentElement.getAttribute('data-o-email-only-signup-position-mvt'), 'true');
-			});
+			oEmailOnlySignup();
+			const component = document.querySelector('[data-o-component~="o-email-only-signup"]');
+			proclaim.strictEqual(component.parentElement.getAttribute('data-o-email-only-signup-position-mvt'), 'true');
 		});
 	});
 });

@@ -1,8 +1,8 @@
 {
   "name": "o-email-only-signup",
   "main": [
-    "main.scss",
-    "main.js"
+    "src/email-only-signup.scss",
+    "src/email-only-signup.js"
   ],
   "homepage": "https://github.com/Financial-Times/o-email-only-signup",
   "ignore": [
