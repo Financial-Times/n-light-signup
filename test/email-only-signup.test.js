@@ -1,75 +1,85 @@
 import proclaim from 'proclaim';
-import oEmailOnlySignup from '../src/email-only-signup';
+import mockery from 'mockery';
+import OEmailSignUp from '../src/email-only-signup';
 import * as fixtures from './helpers/fixtures';
 
 const visuallyHiddenClass = 'o-email-only-signup__visually-hidden';
 
-describe('Email only sign up', () => {
+describe('OEmailSignUp', () => {
+	beforeEach(() => {
+		mockery.enable();
+	});
+
+	beforeEach(() => {
+		mockery.disable();
+	});
+
 	it('is defined', () => {
-		proclaim.isFunction(oEmailOnlySignup);
+		proclaim.isFunction(OEmailSignUp);
 	});
 	
-	describe("Component gets enhanced from a core experience", () => {
+	describe('OEmailSignUp.makeVisible', () => {
+		it("makes the component visible", () => {
+			fixtures.standardHtml();
+			const component = document.querySelector('.o-email-only-signup');
+			
+			OEmailSignUp.defaultOptions(component);
+			OEmailSignUp.makeVisible();
+			
+			proclaim.notOk(component.classList.contains(visuallyHiddenClass))
+		});
+	});
+
+	describe('OEmailSignUp.enhanceExperience', () => {
+		beforeEach(() => {
+			fixtures.collapsibleHtml();
+			const component = document.querySelector('.o-email-only-signup');
+			OEmailSignUp.defaultOptions(component);
+		});
+
 		afterEach(() => {
 			fixtures.reset();
 		});
 
-		it("has a visible dismiss button", () => {
-			fixtures.standardHtml();
-			oEmailOnlySignup();
+		it("makes the dismiss button visible", () => {
 			const dismiss = document.querySelector('[data-o-email-only-signup-close]');
+			
+			OEmailSignUp.enhanceExperience();
 			proclaim.notOk(dismiss.classList.contains(visuallyHiddenClass));
 		});
+
+
 		it("updates the ARIA attributes", () => {
-			fixtures.collapsibleHtml();
-			oEmailOnlySignup();
 			const dismiss = document.querySelector('[data-o-email-only-signup-close]');
+			
+			OEmailSignUp.enhanceExperience();
 			proclaim.strictEqual(dismiss.getAttribute('aria-expanded'), 'true');
 		});
 	});
 	
-	describe("Dismiss behaviour", () => {
+	describe("OEmailSignUp.toggleCollapsibleContent", () => {
+		beforeEach(() => {
+			fixtures.collapsibleHtml();
+			const component = document.querySelector('.o-email-only-signup');
+			OEmailSignUp.defaultOptions(component, {collapsible: true});
+		});
+
 		afterEach(() => {
 			fixtures.reset();
 		});
 
-		it("hides the full component", () => {
-			fixtures.standardHtml();
-			oEmailOnlySignup();
-			const componentEl = document.querySelector('[data-o-component~="o-email-only-signup"]');
-			const dismiss = document.querySelector('[data-o-email-only-signup-close]');
-			dismiss.click();
-
-			proclaim.strictEqual(componentEl.style.display, 'none');
-		});
-
-		it("collapses down to the discreet version when the collapsible option is set", () => {
-			fixtures.collapsibleHtml();
-			oEmailOnlySignup('body', {collapsible: true});
-			
+		it("toggles the content between collapsed and expanded", () => {
 			const contentEl = document.querySelector('[data-o-email-only-signup-content]');
 			const discreetEl = document.querySelector('[data-o-email-only-signup-discreet-content]');
-			const collapse = document.querySelector('[data-o-email-only-signup-close]');
 			
-			collapse.click();
+			OEmailSignUp.toggleCollapsibleContent();
 			
 			proclaim.ok(contentEl.classList.contains(visuallyHiddenClass));
 			proclaim.strictEqual(contentEl.getAttribute('aria-hidden'), 'true');
 			proclaim.notOk(discreetEl.classList.contains(visuallyHiddenClass));
 			proclaim.strictEqual(discreetEl.getAttribute('aria-hidden'), 'false');
-		});
-		
-		it("it is possible to expand to full content version after being collapsed", () => {
-			fixtures.collapsibleHtml();
-			oEmailOnlySignup('body', {collapsible: true});
 			
-			const contentEl = document.querySelector('[data-o-email-only-signup-content]');
-			const discreetEl = document.querySelector('[data-o-email-only-signup-discreet-content]');
-			const collapse = document.querySelector('[data-o-email-only-signup-close]');
-			const expand = document.querySelector('[data-o-email-only-signup-open]');
-			
-			collapse.click();
-			expand.click();
+			OEmailSignUp.toggleCollapsibleContent();
 			
 			proclaim.notOk(contentEl.classList.contains(visuallyHiddenClass));
 			proclaim.strictEqual(contentEl.getAttribute('aria-hidden'), 'false');
@@ -78,100 +88,108 @@ describe('Email only sign up', () => {
 		});
 	});
 		
-	describe("Submiting the form", () => {
+	describe("OEmailSignUp.close", () => {
 		beforeEach(() => {
-			sinon.stub(window, 'fetch');
+			fixtures.collapsibleHtml();
+			const component = document.querySelector('.o-email-only-signup');
+			OEmailSignUp.defaultOptions(component);
+		});
+
+		afterEach(() => {
+			fixtures.reset();
+		});
+
+		it("hides the full component", () => {
+			const component = document.querySelector('.o-email-only-signup');
+
+			OEmailSignUp.close();
+			proclaim.strictEqual(component.style.display, 'none');
+		});
+	});
+	
+	describe("OEmailSignUp.apiRequest", () => {
+		beforeEach(() => {
+			fixtures.collapsibleHtml();
+			const component = document.querySelector('.o-email-only-signup');
 			const res = new window.Response('SUBSCRIPTION_SUCCESSFUL', {
 				status: 200,
 				headers: {
 					'Content-type': 'application/json'
     			}
 			});
-
+			const helpersMock = {};
+			OEmailSignUp.defaultOptions(component);
+			sinon.stub(window, 'fetch');
 			window.fetch.returns(Promise.resolve(res));
-		});
+			
 
+			mockery.registerMock('helpers', helpersMock)
+		});
+		
 		afterEach(() => {
 			window.fetch.restore();
 			fixtures.reset();
 		});
 
-		it("makes a post request to the sign up api", () => {
-			fixtures.standardHtml();
-			oEmailOnlySignup();
-			const form = document.querySelector('[data-o-email-only-signup-form]');
-			const emailInput = form.querySelector('#email');
-			const submit = form.querySelector('.o-email-only-signup__submit');
-			const errorMessage = form.querySelector('[data-o-email-only-signup-email-error]');
-			
-			emailInput.value = 'person@ft.com'
-			submit.click();
-			
+		it.only("makes a post request to the sign up api", () => {
+			helpersMock.isValidEmail = true;
+			OEmailSignUp.apiRequest()	
+			proclaim.ok(window.fetch.calledOnce);
 			proclaim.strictEqual(window.fetch.getCall(0).args[0], '/signup/api/light-signup');
-			proclaim.strictEqual(window.fetch.getCall(0).args[1].body, 'email=person%40ft.com');
 			proclaim.strictEqual(window.fetch.getCall(0).args[1].method, 'POST');
 		});
-		describe("Form validation", () => {
-			it("does not make a post request when an invalid email address is entered", () => {
-				fixtures.standardHtml();
-				oEmailOnlySignup();
-				const form = document.querySelector('[data-o-email-only-signup-form]');
-				const emailInput = form.querySelector('#email');
-				const submit = form.querySelector('.o-email-only-signup__submit');
-				const errorMessage = form.querySelector('[data-o-email-only-signup-email-error]');
-				
-				emailInput.value = 'person£ft.com'
-				submit.click();
-				
-				proclaim.notOk(window.fetch.called);
-			});
-
-			it("shows an error message when an invalid email address is entered", () => {
-				fixtures.standardHtml();
-				oEmailOnlySignup();
-				const form = document.querySelector('[data-o-email-only-signup-form]');
-				const emailInput = form.querySelector('#email');
-				const submit = form.querySelector('.o-email-only-signup__submit');
-				const errorMessage = form.querySelector('[data-o-email-only-signup-email-error]');
-				
-				emailInput.value = 'person£ft.com';
-				submit.click();
-				
-				proclaim.notOk(errorMessage.classList.contains(visuallyHiddenClass));
-			});
-			
-			it("the error message is dismissed when the input is clicked on", () => {
-				fixtures.standardHtml();
-				oEmailOnlySignup();
-				const form = document.querySelector('[data-o-email-only-signup-form]');
-				const emailInput = form.querySelector('#email');
-				const submit = form.querySelector('.o-email-only-signup__submit');
-				const errorMessage = form.querySelector('[data-o-email-only-signup-email-error]');
-				
-				emailInput.value = 'person£ft.com';
-				submit.click();
-				emailInput.click();			
 		
-				proclaim.ok(errorMessage.classList.contains(visuallyHiddenClass));
-			});
+		it("does not make a post request when an invalid email address is entered", () => {
+			const presets = {
+				emailField: {
+					value: sinon.stub().returns('foo')
+				}
+			};
+			OEmailSignUp.apiRequest()	
+			proclaim.notOk(window.fetch.called);
 		});
 	});
-	describe("Positioning", () => {
+	describe("OEmailSignUp.toggleValidation", () => {
 		beforeEach(() => {
-			fixtures.standardHtml();
+			fixtures.collapsibleHtml();
+			const component = document.querySelector('.o-email-only-signup');
+			OEmailSignUp.defaultOptions(component);
 		});
 
 		afterEach(() => {
-			fixtures.reset();		  
+			fixtures.reset();
+		});
+		
+		it("toggles the error message between hidden and visible", () => {
+			const errorMessage = document.querySelector('[data-o-email-only-signup-email-error]');
+			OEmailSignUp.toggleValidation()
+			
+			proclaim.notOk(errorMessage.classList.contains(visuallyHiddenClass));
+			
+			OEmailSignUp.toggleValidation()
+			
+			proclaim.ok(errorMessage.classList.contains(visuallyHiddenClass));
+		});
+	});
+	
+	describe("OEmailSignUp.reposition", () => {
+		beforeEach(() => {
+			fixtures.collapsibleHtml();
+			const component = document.querySelector('.o-email-only-signup');
+			OEmailSignUp.defaultOptions(component);
+		});
+
+		afterEach(() => {
+			fixtures.reset();
 		});
 		
 		it("will position itself as a child of a [data-o-email-only-signup-position-mvt] element if present", () => {
+			const component = document.querySelector('.o-email-only-signup');
 			const mvtElement = document.createElement('div');
 			mvtElement.setAttribute('data-o-email-only-signup-position-mvt', 'true');
 			document.body.append(mvtElement);
 			
-			oEmailOnlySignup();
-			const component = document.querySelector('[data-o-component~="o-email-only-signup"]');
+			OEmailSignUp.reposition(mvtElement, component);
 			proclaim.strictEqual(component.parentElement.getAttribute('data-o-email-only-signup-position-mvt'), 'true');
 		});
 	});

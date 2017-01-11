@@ -24,20 +24,26 @@ function OEmailSignUp (element = document.body, opts = {}) {
 
 	if (!userIsFromLightSignupEmail && element) {
 
-		// Article Position MVT: move the component and ensure visible
 		if (positionMvt) {
-			positionMvt.appendChild(element);
+			OEmailSignUp.reposition(positionMvt, element);
 		}
-		element.classList.remove('o-email-only-signup__visually-hidden');
-		element.setAttribute('aria-hidden', false);
-
-		OEmailSignUp.defaultOptions(element, opts)	
-		OEmailSignUp.enhanceExperience()
-		OEmailSignUp.listeners()
+		OEmailSignUp.defaultOptions(element, opts);
+		OEmailSignUp.enhanceExperience();
+		OEmailSignUp.makeVisible();
+		OEmailSignUp.listeners();
 	}
 }
 
-OEmailSignUp.defaultOptions = (element, opts) => {
+OEmailSignUp.reposition = (parent, element) => {
+	parent.appendChild(element);
+}
+
+OEmailSignUp.makeVisible = () => {
+	presets.self.classList.remove('o-email-only-signup__visually-hidden');
+	presets.self.setAttribute('aria-hidden', false);
+}
+
+OEmailSignUp.defaultOptions = (element, opts = {}) => {
 	presets = {
 		self: element,
 		closeButton: element.querySelector('[data-o-email-only-signup-close]'),
@@ -56,13 +62,18 @@ OEmailSignUp.defaultOptions = (element, opts) => {
 		formErrorClass: 'o-forms--error',
 		selecteInactiveClass: 'o-email-only-signup__select--inactive'
 	};
-
+	
 	const defaultOptions = {
 		signupUrl: '/signup/api/light-signup',
 		collapsible: (presets.openButton && presets.content && presets.discreetContent)
 	};
 
 	options = defaultsDeep(opts, helpers.optionsFromMarkUp(element, defaultOptions), defaultOptions);
+	
+	if (options.collapsible) {
+		presets.contentFocusables = helpers.findFocusablesInEl(presets.content);
+		presets.discreetContentFocusables = helpers.findFocusablesInEl(presets.discreetContent);
+	}
 }
 
 OEmailSignUp.enhanceExperience = () => {
@@ -70,11 +81,6 @@ OEmailSignUp.enhanceExperience = () => {
 		presets.closeButton.classList.remove(presets.visuallyHiddenClass);
 	}
 	OEmailSignUp.updateAria();
-	
-	if (options.collapsible) {
-		presets.contentFocusables = helpers.findFocusablesInEl(presets.content);
-		presets.discreetContentFocusables = helpers.findFocusablesInEl(presets.discreetContent);
-	}
 }
 
 OEmailSignUp.updateAria = () => {
@@ -93,7 +99,7 @@ OEmailSignUp.listeners = () => {
 	if (presets.closeButton) {
 		presets.closeButton.addEventListener('click', () => {
 			if (options.collapsible) {
-				OEmailSignUp.toggleCollapsedContent();
+				OEmailSignUp.toggleCollapsibleContent();
 			} else {
 				OEmailSignUp.close();
 			}	
@@ -102,17 +108,14 @@ OEmailSignUp.listeners = () => {
 	
 	if (options.collapsible) {
 		presets.openButton.addEventListener('click', () => {
-			OEmailSignUp.toggleCollapsedContent();	
+			OEmailSignUp.toggleCollapsibleContent();	
 		});
 	}
 	
 	presets.form.addEventListener('submit', (event) => {
 		event.preventDefault();
-		if (helpers.isValidEmail(presets.emailField.value)) {
-			OEmailSignUp.apiRequest(event);
-		} else {
-			OEmailSignUp.toggleValidation();		
-		}
+		const formData = helpers.serializeFormInputs(event.target);
+		OEmailSignUp.apiRequest(formData);
 	});
 	
 	presets.emailField.addEventListener('click', () => {
@@ -127,7 +130,7 @@ OEmailSignUp.listeners = () => {
 	}
 }
 
-OEmailSignUp.toggleCollapsedContent = () => {
+OEmailSignUp.toggleCollapsibleContent = () => {
 	
 	const toggledState = presets.content.getAttribute('aria-hidden') === 'true' ? false : true;
 
@@ -152,22 +155,26 @@ OEmailSignUp.close = () => {
 	OEmailSignUp.updateAria();
 }
 
-OEmailSignUp.apiRequest = (event) => {
-	const pageLocation = window.location.href;
-	const opts = {
-		method: 'POST',
-		headers: {
-			'Content-type': 'application/x-www-form-urlencoded'
-		},
-		credentials: 'include',
-		body: helpers.serializeFormInputs(event.target)
-	};
-	fetch(options.signupUrl, opts)
-		.then(response => response.text())
-		.then(response => {
-			presets.displaySection.innerHTM = helpers.getResponseMessage(response, pageLocation);
-		})
-		.catch(err => console.log(err));
+OEmailSignUp.apiRequest = (formData) => {
+	if (helpers.isValidEmail(presets.emailField.value)) {
+		const pageLocation = window.location.href;
+		const opts = {
+			method: 'POST',
+			headers: {
+				'Content-type': 'application/x-www-form-urlencoded'
+			},
+			credentials: 'include',
+			body: formData 	
+		};
+		fetch(options.signupUrl, opts)
+			.then(response => response.text())
+			.then(response => {
+				presets.displaySection.innerHTML = helpers.getResponseMessage(response, pageLocation);
+			})
+			.catch(err => console.log(err));
+	} else {
+		OEmailSignUp.toggleValidation();		
+	}
 }
 
 OEmailSignUp.toggleValidation = () => {
