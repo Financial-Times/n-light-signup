@@ -60,7 +60,7 @@ OEmailSignUp.defaultOptions = (element, opts = {}) => {
 		ariaControls: helpers.toArray(element.querySelectorAll('[aria-controls]')) || null,
 		visuallyHiddenClass: 'o-email-only-signup__visually-hidden',
 		formErrorClass: 'o-forms--error',
-		selecteInactiveClass: 'o-email-only-signup__select--inactive'
+		selectInactiveClass: 'o-email-only-signup__select--inactive'
 	};
 	
 	const defaultOptions = {
@@ -118,12 +118,12 @@ OEmailSignUp.listeners = () => {
 		OEmailSignUp.apiRequest(formData);
 	});
 	
-	presets.emailField.addEventListener('click', () => {
+	presets.emailField.addEventListener('focus', () => {
 		if (presets.emailField.classList.contains(presets.formErrorClass)) {
 			OEmailSignUp.toggleValidation();
 		}
 	});
-
+	
 	if (presets.topicSelect) {
 		presets.topicSelect.addEventListener('focus', OEmailSignUp.toggleSelectPlaceholder);
 		presets.topicSelect.addEventListener('blur', OEmailSignUp.toggleSelectPlaceholder);
@@ -184,15 +184,13 @@ OEmailSignUp.toggleValidation = () => {
 
 OEmailSignUp.toggleSelectPlaceholder = (event) => {
 	let isPlaceholderSelected = (event.target.options[event.target.selectedIndex].getAttribute('placeholder') !== null);
-
+	
 	if (event.type === 'focus') {
 		presets.topicSelect.classList.remove(presets.selectInactiveClass);
 	}
-
 	if (event.type === 'blur' && isPlaceholderSelected) {
 		presets.topicSelect.classList.add(presets.selectInactiveClass);
 	}
 }
-	const SELECT_INACTIVE_CLASS = 'o-email-only-signup__select--inactive';
 
 module.exports = OEmailSignUp;
