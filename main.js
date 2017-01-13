@@ -1,10 +1,8 @@
-import * as emailOnlySignup from './src/email-only-signup';
+import oEmailSignUp from './src/email-only-signup';
 
 export default {
-
-	init(el = document.body, options = {}) {
+	init(element = document.body, options = {}) {
 		const utmTermParam = /[?&]utm_term(=([^&#]*)|&|#|$)/i.exec(window.location.href);
-		const positionMvt = document.querySelector('[data-o-email-only-signup-position-mvt]');
 
 		let userIsFromLightSignupEmail;
 
@@ -12,24 +10,16 @@ export default {
 			userIsFromLightSignupEmail = (utmTermParam[2] === 'lightsignup');
 		}
 
-		if(!(el instanceof HTMLElement)) {
-			el = document.querySelector(el);
+		if(!(element instanceof HTMLElement)) {
+			element = document.querySelector(element);
 		}
 
-		if (!el.matches('[data-o-component~="o-email-only-signup"]')) {
-			el = el.querySelector('[data-o-component~="o-email-only-signup"]');
+		if (!element.matches('[data-o-component~="o-email-only-signup"]')) {
+			element = element.querySelector('[data-o-component~="o-email-only-signup"]');
 		}
 
-		if (!userIsFromLightSignupEmail && el) {
-
-			// Article Position MVT: move the component and ensure visible
-			if (positionMvt) {
-				positionMvt.appendChild(el);
-			}
-			el.classList.remove('o-email-only-signup__visually-hidden');
-			el.setAttribute('aria-hidden', false);
-
-			emailOnlySignup.init(el, options);
+		if (!userIsFromLightSignupEmail && element) {
+			oEmailSignUp(element, options);
 		}
 	}
-};
+}

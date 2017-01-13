@@ -1,3 +1,3 @@
-import oEmailOnlySignup from '../../';
+import oEmailOnlySignup from '../../main';
 
 oEmailOnlySignup.init();
