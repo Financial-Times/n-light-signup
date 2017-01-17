@@ -11,7 +11,6 @@
 
 @import "./src/scss/email-only-signup";
 
-
 @if $o-email-only-signup-is-silent == false {
 	@include oEmailOnlySignup;
 }
