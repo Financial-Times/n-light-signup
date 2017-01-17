@@ -22,4 +22,4 @@ export default {
 			oEmailSignUp(element, options);
 		}
 	}
-}
+};

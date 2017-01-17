@@ -1,5 +1,5 @@
 import defaultsDeep from 'lodash/object/defaultsDeep';
-import helpers from './helpers'
+import helpers from './helpers';
 
 let presets;
 let options;
@@ -17,12 +17,12 @@ oEmailSignUp.reposition = (element) => {
 	if (positionMvt) {
 		positionMvt.appendChild(element);
 	}
-}
+};
 
 oEmailSignUp.makeVisible = () => {
 	presets.self.classList.remove('o-email-only-signup__visually-hidden');
 	presets.self.setAttribute('aria-hidden', false);
-}
+};
 
 oEmailSignUp.defaultOptions = (element, opts = {}) => {
 	presets = {
@@ -43,26 +43,26 @@ oEmailSignUp.defaultOptions = (element, opts = {}) => {
 		formErrorClass: 'o-forms--error',
 		selectInactiveClass: 'o-email-only-signup__select--inactive'
 	};
-	
+
 	const defaultOptions = {
 		signupUrl: '/signup/api/light-signup',
 		collapsible: (presets.openButton && presets.content && presets.discreetContent)
 	};
 
 	options = defaultsDeep(opts, helpers.optionsFromMarkUp(element, defaultOptions), defaultOptions);
-	
+
 	if (options.collapsible) {
 		presets.contentFocusables = helpers.findFocusablesInEl(presets.content);
 		presets.discreetContentFocusables = helpers.findFocusablesInEl(presets.discreetContent);
 	}
-}
+};
 
 oEmailSignUp.enhanceExperience = () => {
 	if (presets.closeButton) {
 		presets.closeButton.classList.remove(presets.visuallyHiddenClass);
 	}
 	oEmailSignUp.updateAria();
-}
+};
 
 oEmailSignUp.updateAria = () => {
 	if (presets.ariaControls) {
@@ -74,7 +74,7 @@ oEmailSignUp.updateAria = () => {
 			}
 		});
 	}
-}
+};
 
 oEmailSignUp.listeners = () => {
 	if (presets.closeButton) {
@@ -83,36 +83,36 @@ oEmailSignUp.listeners = () => {
 				oEmailSignUp.toggleCollapsibleContent();
 			} else {
 				oEmailSignUp.close();
-			}	
-		})		
-	}
-	
-	if (options.collapsible) {
-		presets.openButton.addEventListener('click', () => {
-			oEmailSignUp.toggleCollapsibleContent();	
+			}
 		});
 	}
-	
+
+	if (options.collapsible) {
+		presets.openButton.addEventListener('click', () => {
+			oEmailSignUp.toggleCollapsibleContent();
+		});
+	}
+
 	presets.form.addEventListener('submit', (event) => {
 		event.preventDefault();
 		const formData = helpers.serializeFormInputs(event.target);
 		oEmailSignUp.apiRequest(formData);
 	});
-	
+
 	presets.emailField.addEventListener('focus', () => {
 		if (presets.emailField.classList.contains(presets.formErrorClass)) {
 			oEmailSignUp.toggleValidation();
 		}
 	});
-	
+
 	if (presets.topicSelect) {
 		presets.topicSelect.addEventListener('focus', oEmailSignUp.toggleSelectPlaceholder);
 		presets.topicSelect.addEventListener('blur', oEmailSignUp.toggleSelectPlaceholder);
 	}
-}
+};
 
 oEmailSignUp.toggleCollapsibleContent = () => {
-	
+
 	const toggledState = presets.content.getAttribute('aria-hidden') === 'true' ? false : true;
 
 	presets.content.setAttribute('aria-hidden', toggledState);
@@ -128,13 +128,13 @@ oEmailSignUp.toggleCollapsibleContent = () => {
 	});
 
 	oEmailSignUp.updateAria();
-}
+};
 
 oEmailSignUp.close = () => {
 	presets.self.style.display = 'none';
 	presets.self.setAttribute('aria-hidden', true);
 	oEmailSignUp.updateAria();
-}
+};
 
 oEmailSignUp.apiRequest = (formData) => {
 	if (helpers.isValidEmail(presets.emailField.value)) {
@@ -145,7 +145,7 @@ oEmailSignUp.apiRequest = (formData) => {
 				'Content-type': 'application/x-www-form-urlencoded'
 			},
 			credentials: 'include',
-			body: formData 	
+			body: formData
 		};
 		fetch(options.signupUrl, opts)
 			.then(response => response.text())
@@ -154,24 +154,24 @@ oEmailSignUp.apiRequest = (formData) => {
 			})
 			.catch(err => console.log(err));
 	} else {
-		oEmailSignUp.toggleValidation();		
+		oEmailSignUp.toggleValidation();
 	}
-}
+};
 
 oEmailSignUp.toggleValidation = () => {
 	presets.emailField.classList.toggle(presets.formErrorClass);
-	presets.invalidEmailMessage.classList.toggle(presets.visuallyHiddenClass)
-}
+	presets.invalidEmailMessage.classList.toggle(presets.visuallyHiddenClass);
+};
 
 oEmailSignUp.toggleSelectPlaceholder = (event) => {
 	let isPlaceholderSelected = (event.target.options[event.target.selectedIndex].getAttribute('placeholder') !== null);
-	
+
 	if (event.type === 'focus') {
 		presets.topicSelect.classList.remove(presets.selectInactiveClass);
 	}
 	if (event.type === 'blur' && isPlaceholderSelected) {
 		presets.topicSelect.classList.add(presets.selectInactiveClass);
 	}
-}
+};
 
 module.exports = oEmailSignUp;
