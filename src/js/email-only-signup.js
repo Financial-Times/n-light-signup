@@ -4,27 +4,27 @@ import helpers from './helpers';
 let presets;
 let options;
 
-function oEmailSignUp (element, opts) {
-	oEmailSignUp.defaultOptions(element, opts);
-	oEmailSignUp.reposition(element);
-	oEmailSignUp.enhanceExperience();
-	oEmailSignUp.makeVisible();
-	oEmailSignUp.listeners();
+function EmailSignUp (element, opts) {
+	EmailSignUp.defaultOptions(element, opts);
+	EmailSignUp.reposition(element);
+	EmailSignUp.enhanceExperience();
+	EmailSignUp.makeVisible();
+	EmailSignUp.listeners();
 }
 
-oEmailSignUp.reposition = (element) => {
+EmailSignUp.reposition = (element) => {
 	const positionMvt = document.querySelector('[data-o-email-only-signup-position-mvt]');
 	if (positionMvt) {
 		positionMvt.appendChild(element);
 	}
 };
 
-oEmailSignUp.makeVisible = () => {
+EmailSignUp.makeVisible = () => {
 	presets.self.classList.remove('o-email-only-signup__visually-hidden');
 	presets.self.setAttribute('aria-hidden', false);
 };
 
-oEmailSignUp.defaultOptions = (element, opts = {}) => {
+EmailSignUp.defaultOptions = (element, opts = {}) => {
 	presets = {
 		self: element,
 		closeButton: element.querySelector('[data-o-email-only-signup-close]'),
@@ -57,14 +57,14 @@ oEmailSignUp.defaultOptions = (element, opts = {}) => {
 	}
 };
 
-oEmailSignUp.enhanceExperience = () => {
+EmailSignUp.enhanceExperience = () => {
 	if (presets.closeButton) {
 		presets.closeButton.classList.remove(presets.visuallyHiddenClass);
 	}
-	oEmailSignUp.updateAria();
+	EmailSignUp.updateAria();
 };
 
-oEmailSignUp.updateAria = () => {
+EmailSignUp.updateAria = () => {
 	if (presets.ariaControls) {
 		presets.ariaControls.forEach(el => {
 			const target = presets.self.querySelector('#' + el.getAttribute('aria-controls'));
@@ -76,42 +76,42 @@ oEmailSignUp.updateAria = () => {
 	}
 };
 
-oEmailSignUp.listeners = () => {
+EmailSignUp.listeners = () => {
 	if (presets.closeButton) {
 		presets.closeButton.addEventListener('click', () => {
 			if (options.collapsible) {
-				oEmailSignUp.toggleCollapsibleContent();
+				EmailSignUp.toggleCollapsibleContent();
 			} else {
-				oEmailSignUp.close();
+				EmailSignUp.close();
 			}
 		});
 	}
 
 	if (options.collapsible) {
 		presets.openButton.addEventListener('click', () => {
-			oEmailSignUp.toggleCollapsibleContent();
+			EmailSignUp.toggleCollapsibleContent();
 		});
 	}
 
 	presets.form.addEventListener('submit', (event) => {
 		event.preventDefault();
 		const formData = helpers.serializeFormInputs(event.target);
-		oEmailSignUp.apiRequest(formData);
+		EmailSignUp.apiRequest(formData);
 	});
 
 	presets.emailField.addEventListener('focus', () => {
 		if (presets.emailField.classList.contains(presets.formErrorClass)) {
-			oEmailSignUp.toggleValidation();
+			EmailSignUp.toggleValidation();
 		}
 	});
 
 	if (presets.topicSelect) {
-		presets.topicSelect.addEventListener('focus', oEmailSignUp.toggleSelectPlaceholder);
-		presets.topicSelect.addEventListener('blur', oEmailSignUp.toggleSelectPlaceholder);
+		presets.topicSelect.addEventListener('focus', EmailSignUp.toggleSelectPlaceholder);
+		presets.topicSelect.addEventListener('blur', EmailSignUp.toggleSelectPlaceholder);
 	}
 };
 
-oEmailSignUp.toggleCollapsibleContent = () => {
+EmailSignUp.toggleCollapsibleContent = () => {
 
 	const toggledState = presets.content.getAttribute('aria-hidden') === 'true' ? false : true;
 
@@ -127,16 +127,16 @@ oEmailSignUp.toggleCollapsibleContent = () => {
 		helpers.toggleTabIndex(el, toggledState);
 	});
 
-	oEmailSignUp.updateAria();
+	EmailSignUp.updateAria();
 };
 
-oEmailSignUp.close = () => {
+EmailSignUp.close = () => {
 	presets.self.style.display = 'none';
 	presets.self.setAttribute('aria-hidden', true);
-	oEmailSignUp.updateAria();
+	EmailSignUp.updateAria();
 };
 
-oEmailSignUp.apiRequest = (formData) => {
+EmailSignUp.apiRequest = (formData) => {
 	if (helpers.isValidEmail(presets.emailField.value)) {
 		const pageLocation = window.location.href;
 		const opts = {
@@ -154,16 +154,16 @@ oEmailSignUp.apiRequest = (formData) => {
 			})
 			.catch(err => console.log(err));
 	} else {
-		oEmailSignUp.toggleValidation();
+		EmailSignUp.toggleValidation();
 	}
 };
 
-oEmailSignUp.toggleValidation = () => {
+EmailSignUp.toggleValidation = () => {
 	presets.emailField.classList.toggle(presets.formErrorClass);
 	presets.invalidEmailMessage.classList.toggle(presets.visuallyHiddenClass);
 };
 
-oEmailSignUp.toggleSelectPlaceholder = (event) => {
+EmailSignUp.toggleSelectPlaceholder = (event) => {
 	let isPlaceholderSelected = (event.target.options[event.target.selectedIndex].getAttribute('placeholder') !== null);
 
 	if (event.type === 'focus') {
@@ -174,4 +174,26 @@ oEmailSignUp.toggleSelectPlaceholder = (event) => {
 	}
 };
 
-module.exports = oEmailSignUp;
+EmailSignUp.init = (element = document.body, options = {}) => {
+	const utmTermParam = /[?&]utm_term(=([^&#]*)|&|#|$)/i.exec(window.location.href);
+
+	let userIsFromLightSignupEmail;
+
+	if (utmTermParam) {
+		userIsFromLightSignupEmail = (utmTermParam[2] === 'lightsignup');
+	}
+
+	if(!(element instanceof HTMLElement)) {
+		element = document.querySelector(element);
+	}
+
+	if (!element.matches('[data-o-component~="o-email-only-signup"]')) {
+		element = element.querySelector('[data-o-component~="o-email-only-signup"]');
+	}
+
+	if (!userIsFromLightSignupEmail && element) {
+		return new EmailSignUp(element, options);
+	}
+};
+
+module.exports = EmailSignUp;

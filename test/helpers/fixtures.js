@@ -21,7 +21,7 @@ function insert(html) {
 
 function markup (dismissable) {
 	const html = `
-<div class="o-email-only-signup o-grid-container" data-o-component="o-email-only-signup" data-trackable="light-signup">
+<div class="o-email-only-signup o-grid-container" data-o-component="o-email-only-signup" data-trackable="light-signup" id="element">
 	${dismissable ? '' : '<div class="o-email-only-signup__discreet o-email-only-signup__visually-hidden" aria-hidden="true" data-o-email-only-signup-discreet-content><button class="o-email-only-signup__open" aria-controls="o-email-only-signup-content" data-o-email-only-signup-open>show more</button></div>'}
 	<div class="o-grid-row o-email-only-signup__inner" aria-hidden="false" id="o-email-only-signup-content" data-o-email-only-signup-content>
 		<div data-o-grid-colspan="hide S5" class="o-email-only-signup__promo">
