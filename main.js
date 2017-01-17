@@ -1,4 +1,4 @@
-import oEmailSignUp from './src/email-only-signup';
+import oEmailSignUp from './src/js/email-only-signup';
 
 export default {
 	init(element = document.body, options = {}) {

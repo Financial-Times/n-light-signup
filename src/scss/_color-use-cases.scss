@@ -1,0 +1,7 @@
+@include oColorsSetColor('o-email-only-signup-placeholder-grey', #767676);
+
+@include oColorsSetUseCase(o-email-only-signup-box, border, 'teal-1');
+@include oColorsSetUseCase(o-email-only-signup-input, border, 'teal-1');
+@include oColorsSetUseCase(o-email-only-signup-muted, text, 'grey-tint4');
+@include oColorsSetUseCase(o-email-only-signup-highlight, text, 'teal-1');
+@include oColorsSetUseCase(o-email-only-signup-placeholder, text, 'o-email-only-signup-placeholder-grey');
