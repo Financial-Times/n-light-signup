@@ -1,37 +1,18 @@
 # o-email-only-signup
 
-Experimental light sign-up form
+Light sign-up form.
 
-## Installation
+- [Usage](#usage)
+	- [Markup](#markup)
+	- [JavaScript](#javascript)
+	- [Sass](#sass)
+- [Migration guide](#migration-guide)
+- [Contact](#contact)
+- [Licence](#licence)
 
-```shell
-bower install --S o-email-only-signup
-```
+## Usage
 
-## Client JS
-
-```javascript
-var signUp = require('o-email-only-signup');
-signUp.init();
-```
-
-### Configuration
-
-Options can be specified imperatively by passing an object into `init`, or declaratively by `data-` attributes. Unspecified options will use the default values.
-
-| Javascript  | Data attribute                        | Description             | Default                    |
-|-------------|---------------------------------------|-------------------------|----------------------------|
-| `signupUrl` | `data-o-email-only-signup-signup-url` | URL to post the form to | `/signup/api/light-signup` |
-
-## SCSS
-
-Only non-silent mode is supported.
-
-```sass
-@import 'o-email-only-signup/main'
-```
-
-## Markup
+### Markup
 
 Some elements inside the form require specific data attributes so the JavaScript can add some behaviour correctly. These are:
 
@@ -54,11 +35,11 @@ In the collapsed state `data-o-email-only-signup-content` will be visually hidde
 
 - `data-o-email-only-signup-position-mvt`: Applied to an element to which the form will become a child [see below](#positioning-mvt) for more information.
 
-## Promo image
+#### Promo image
 You can optionally include a responsive promo image asset in the component. See the demos for examples.
 
 
-## Positioning MVT
+#### Positioning MVT
 
 _**This is optional.** If no positioning element exists the form will render in place._
 
@@ -70,6 +51,63 @@ If this element exists, the form component will become its child, thus moving th
 
 _NOTE:_ you **should** initially render the form in a hidden state in order to avoid a reflow. Simply add the class `o-email-only-signup__visually-hidden` to the form (the `data-o-email-only-signup-form` element), the class will be removed when the component is initialised.
 
+### JavaScript
 
+```javascript
+var signUp = require('o-email-only-signup');
+signUp.init();
+```
+
+#### Configuration
+
+Options can be specified imperatively by passing an object into `init`, or declaratively by `data-` attributes. Unspecified options will use the default values.
+
+| Javascript  | Data attribute                        | Description             | Default                    |
+|-------------|---------------------------------------|-------------------------|----------------------------|
+| `signupUrl` | `data-o-email-only-signup-signup-url` | URL to post the form to | `/signup/api/light-signup` |
+
+### Sass
+
+As with all Origami components, o-email-only-signup has a silent mode. To use its compiled CSS (rather than incorporating its mixins into your own Sass) set `$o-email-only-signup-is-silent: false;` in your Sass before you import the o-email-only-signup Sass:
+
+```sass
+$o-email-only-signup-is-silent: false;
+@import 'o-email-only-signup/main';
+```
+
+#### Using Sass Mixins
+
+The full o-email-only-signup styles can be access via including the `oEmailOnlySignup` mixin:
+
+```sass
+// Import the o-email-only-signup sass file
+@import 'o-email-only-signup/main';
+
+// Output the o-email-only-signup styles
+@include oEmailOnlySignup;
+```
+
+## Migration guide
+
+### Migrating from v4.x.x to v5.x.x
+
+Version 5 adds support for silent mode. To continue including the full component in your Sass, update where you import the o-email-only-signup Sass:
+
+```diff
++ $o-email-only-signup-is-silent: false;
+@import 'o-email-only-signup/main'
+```
+
+---
+
+## Contact
+
+If you have any questions or comments about this component, or need help using it, please either [raise an issue](https://github.com/Financial-Times/o-component-boilerplate/issues), visit [#ft-origami](https://financialtimes.slack.com/messages/ft-origami/) or email [Origami Support](mailto:origami-support@ft.com).
+
+----
+
+## Licence
+
+This software is published by the Financial Times under the [MIT licence](http://opensource.org/licenses/MIT).
 
 

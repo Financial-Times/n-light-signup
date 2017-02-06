@@ -5,5 +5,12 @@
 @import "o-forms/main";
 @import "o-colors/main";
 
-@import "./src/email-only-signup";
+@import "./src/scss/variables";
+@import "./src/scss/color-use-cases";
+@import "./src/scss/mixins";
 
+@import "./src/scss/email-only-signup";
+
+@if $o-email-only-signup-is-silent == false {
+	@include oEmailOnlySignup;
+}

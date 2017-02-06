@@ -1,6 +1,9 @@
+/*global describe, beforeEach, afterEach, it*/
+
 import proclaim from 'proclaim';
-import oEmailSignUp from '../src/email-only-signup';
-import helpers from '../src/helpers';
+import oEmailSignUp from '../src/js/email-only-signup';
+import helpers from '../src/js/helpers';
+import sinon from 'sinon/pkg/sinon';
 import * as fixtures from './helpers/fixtures';
 
 const visuallyHiddenClass = 'o-email-only-signup__visually-hidden';
@@ -13,16 +16,16 @@ describe('oEmailSignUp', () => {
 	afterEach(() => {
 		fixtures.reset();
 	});
-	
+
 	describe('Inital setup', () => {
 		beforeEach(() => {
 			sinon.stub(oEmailSignUp, 'reposition');
 			sinon.stub(oEmailSignUp, 'defaultOptions');
-			sinon.stub(oEmailSignUp, 'enhanceExperience')
-			sinon.stub(oEmailSignUp, 'makeVisible')
-			sinon.stub(oEmailSignUp, 'listeners')
+			sinon.stub(oEmailSignUp, 'enhanceExperience');
+			sinon.stub(oEmailSignUp, 'makeVisible');
+			sinon.stub(oEmailSignUp, 'listeners');
 		});
-		
+
 		afterEach(() => {
 			oEmailSignUp.reposition.restore();
 			oEmailSignUp.defaultOptions.restore();
@@ -34,7 +37,7 @@ describe('oEmailSignUp', () => {
 		it('is defined', () => {
 			proclaim.isFunction(oEmailSignUp);
 		});
-		
+
 		it('calls oEmailSignUp.defaultOptions', () => {
 			oEmailSignUp();
 			proclaim.ok(oEmailSignUp.reposition.calledOnce);
@@ -44,17 +47,17 @@ describe('oEmailSignUp', () => {
 			oEmailSignUp();
 			proclaim.ok(oEmailSignUp.defaultOptions.calledOnce);
 		});
-		
+
 		it('calls oEmailSignUp.enhanceExperience', () => {
 			oEmailSignUp();
 			proclaim.ok(oEmailSignUp.enhanceExperience.calledOnce);
 		});
-		
+
 		it('calls oEmailSignUp.makeVisible', () => {
 			oEmailSignUp();
 			proclaim.ok(oEmailSignUp.makeVisible.calledOnce);
 		});
-		
+
 		it('calls oEmailSignUp.listeners', () => {
 
 			oEmailSignUp();
@@ -68,7 +71,7 @@ describe('oEmailSignUp', () => {
 			oEmailSignUp.defaultOptions(component);
 			oEmailSignUp.makeVisible();
 
-			proclaim.notOk(component.classList.contains(visuallyHiddenClass))
+			proclaim.notOk(component.classList.contains(visuallyHiddenClass));
 		});
 	});
 
@@ -84,9 +87,9 @@ describe('oEmailSignUp', () => {
 			oEmailSignUp.enhanceExperience();
 			proclaim.notOk(dismiss.classList.contains(visuallyHiddenClass));
 		});
-		
+
 		it('calls oEmailSignUp.updateAria', () => {
-			const spy = sinon.spy(oEmailSignUp, 'enhanceExperience')
+			const spy = sinon.spy(oEmailSignUp, 'enhanceExperience');
 			oEmailSignUp.enhanceExperience();
 
 			proclaim.ok(spy.calledOnce);
@@ -107,7 +110,7 @@ describe('oEmailSignUp', () => {
 			proclaim.strictEqual(dismiss.getAttribute('aria-expanded'), 'true');
 		});
 	});
-	
+
 	describe('oEmailSignUp.listeners', () => {
 		beforeEach(() => {
 			const component = document.querySelector('.o-email-only-signup');
@@ -121,7 +124,7 @@ describe('oEmailSignUp', () => {
 			const event = new Event('click');
 			const dismiss = document.querySelector('[data-o-email-only-signup-close]');
 			const spy = sinon.spy(oEmailSignUp, 'close');
-			
+
 			oEmailSignUp.listeners();
 			dismiss.dispatchEvent(event);
 
@@ -196,7 +199,7 @@ describe('oEmailSignUp', () => {
 
 			spy.restore();
 		});
-		
+
 		it('calls oEmailSignUp.toggleSelectPlaceholder when the select field has blur', () => {
 			const event = new Event('blur');
 			const select = document.querySelector('[data-o-email-only-signup-dropdown]');
@@ -260,9 +263,9 @@ describe('oEmailSignUp', () => {
 					'Content-type': 'application/json'
     			}
 			});
-			const fetchMock = sinon.stub(window, 'fetch');
-			const helperMock = sinon.stub(helpers, 'isValidEmail');
-			
+			sinon.stub(window, 'fetch');
+			sinon.stub(helpers, 'isValidEmail');
+
 			oEmailSignUp.defaultOptions(component);
 			window.fetch.returns(Promise.resolve(res));
 
@@ -274,7 +277,7 @@ describe('oEmailSignUp', () => {
 
 		it('makes a post request to the sign up api', () => {
 			helpers.isValidEmail.returns(true);
-			oEmailSignUp.apiRequest()
+			oEmailSignUp.apiRequest();
 			proclaim.ok(window.fetch.calledOnce);
 			proclaim.strictEqual(window.fetch.getCall(0).args[0], '/signup/api/light-signup');
 			proclaim.strictEqual(window.fetch.getCall(0).args[1].method, 'POST');
@@ -282,7 +285,7 @@ describe('oEmailSignUp', () => {
 
 		it('does not make a post request when an invalid email address is entered', () => {
 			helpers.isValidEmail.returns(false);
-			oEmailSignUp.apiRequest()
+			oEmailSignUp.apiRequest();
 			proclaim.notOk(window.fetch.called);
 		});
 	});
@@ -294,11 +297,11 @@ describe('oEmailSignUp', () => {
 
 		it('toggles the error message between hidden and visible', () => {
 			const errorMessage = document.querySelector('[data-o-email-only-signup-email-error]');
-			oEmailSignUp.toggleValidation()
+			oEmailSignUp.toggleValidation();
 
 			proclaim.notOk(errorMessage.classList.contains(visuallyHiddenClass));
 
-			oEmailSignUp.toggleValidation()
+			oEmailSignUp.toggleValidation();
 
 			proclaim.ok(errorMessage.classList.contains(visuallyHiddenClass));
 		});
@@ -321,7 +324,7 @@ describe('oEmailSignUp', () => {
 		});
 	});
 
-	
+
 	describe('oEmailSignUp.toggleSelectPlaceholder', () => {
 		beforeEach(() => {
 			const component = document.querySelector('.o-email-only-signup');
@@ -341,17 +344,17 @@ describe('oEmailSignUp', () => {
 
 			spy.restore();
 		});
-		
+
 		it('adds the inactive class when the select has blur and the placeholder option is selected', () => {
 			const event = new Event('blur');
 			const select = document.querySelector('[data-o-email-only-signup-dropdown]');
 			const spy = sinon.spy(oEmailSignUp, 'toggleSelectPlaceholder');
 
 			select.selectedIndex = select.querySelector('[placeholder]').index;
-			
+
 			oEmailSignUp.listeners();
 			select.dispatchEvent(event);
-			
+
 			proclaim.ok(spy.calledOnce);
 			proclaim.ok(select.classList.contains('o-email-only-signup__select--inactive'));
 
