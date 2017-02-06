@@ -1,13 +1,15 @@
 machine:
   node:
-    version: 4.2.1
-
-dependencies:
+    version: 6
   post:
-    - npm install bower
-    - bower install
+    - npm install -g origami-build-tools
+dependencies:
+  override:
+    - obt install
     - make build
+  cache_directories:
+    - "node_modules"
 test:
   override:
     - obt test
-    - ovt verify
+    - obt verify
