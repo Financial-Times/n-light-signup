@@ -16,38 +16,32 @@
         {
             "name": "promo-image",
             "description": "Light signup form with promo image",
-            "template": "demos/src/standard.mustache",
-            "path": "/demos/promo-image.html"
+            "template": "demos/src/standard.mustache"
         },
         {
             "name": "no-promo",
             "description": "Light signup form without promo image",
-            "template": "demos/src/no-promo.mustache",
-            "path": "/demos/no-promo.html"
+            "template": "demos/src/no-promo.mustache"
         },
         {
             "name": "topic-dropdown",
             "description": "Light signup form with promo & topic dropdown",
-            "template": "demos/src/topic-dropdown.mustache",
-            "path": "/demos/topic-dropdown.html"
+            "template": "demos/src/topic-dropdown.mustache"
         },
         {
             "name": "inline",
             "description": "Light signup form which can appear inline with content",
-            "template": "demos/src/inline.mustache",
-            "path": "/demos/inline.html"
+            "template": "demos/src/inline.mustache"
         },
         {
             "name": "coloured-background",
             "description": "Light signup form with a coloured background",
-            "template": "demos/src/coloured-background.mustache",
-            "path": "/demos/coloured-background.html"
+            "template": "demos/src/coloured-background.mustache"
         },
         {
             "name": "non-collapsible",
             "description": "Light signup form which doesn’t collapse",
-            "template": "demos/src/non-collapsible.mustache",
-            "path": "/demos/non-collapsible.html"
+            "template": "demos/src/non-collapsible.mustache"
         },
         {
             "name": "pa11y",
