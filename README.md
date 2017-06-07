@@ -1,5 +1,10 @@
 # o-email-only-signup
 
+#### :warning: This componented has been deprecated.
+**The endpoints detailed in [configuration](#configuration) no longer exist. You could use https://github.com/Financial-Times/newsletter-signup to mount the required endpoints via a different application if needed.**
+
+----
+
 Light sign-up form.
 
 - [Usage](#usage)
