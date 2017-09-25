@@ -3,7 +3,7 @@ import proclaim from 'proclaim';
 import sinon from 'sinon/pkg/sinon';
 import * as fixtures from './helpers/fixtures';
 
-const oEmailSignUp = require('./../main');
+import oEmailSignUp from './../main';
 
 describe("ComponentBoilerplate", () => {
 	it('is defined', () => {
